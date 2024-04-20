@@ -72,6 +72,8 @@ class _ProductListPageState extends State<ProductListPage> {
               } else if (state.status == BlocStatus.fetching) {
                 CustomWidgets.showSnackBar(
                     context: context, title: state.message);
+              }else {
+                
               }
             },
           ),

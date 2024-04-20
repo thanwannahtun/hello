@@ -5,5 +5,8 @@ enum BlocStatus {
   addfailed,
   fetching,
   fetched,
-  fetchefailed
+  fetchefailed,
+  updated,
+  updating,
+  updatefailed
 }

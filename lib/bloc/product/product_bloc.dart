@@ -22,6 +22,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<ProductAddEvent>(_addProduct);
   }
 
+  _fetchAllProducts() async {
+    List<Map<String, dynamic>> productList = await _productRepo.fetchProducts();
+    List<Product> products =
+        productList.map((e) => Product.fromJson(e)).toList();
+    return products.isEmpty ? [] : products;
+  }
+
   FutureOr<void> _fetchProduct(
       ProductFetchEvent event, Emitter<ProductState> emit) async {
     emit(
@@ -29,10 +36,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
     debugPrint('========== fetch Product =========');
     try {
-      List<Map<String, dynamic>> productList =
-          await _productRepo.fetchProducts();
-      List<Product> products =
-          productList.map((e) => Product.fromJson(e)).toList();
+      List<Product> products = await _fetchAllProducts();
+
       debugPrint('fetched products  => $products');
       emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {

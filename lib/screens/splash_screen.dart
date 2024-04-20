@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello/utils/barcode_service.dart';
 import 'package:hello/utils/route_lists.dart';
 import 'package:hello/widgets/custom_drawer.dart';
+import 'package:hello/widgets/custom_widgets.dart';
 import 'package:hello/widgets/floating_action_button.dart';
 
 class SplashPage extends StatefulWidget {
@@ -29,16 +30,15 @@ class _SplashPageState extends State<SplashPage> {
       drawer: const CustomDrawer(),
       floatingActionButton: CustomFloatingActionButton(
         text: 'Scan Barcode',
-        onPressed: () => scanBarcode(),
+        onPressed: () => scanBarcode(context),
       ),
     );
   }
 
-  scanBarcode() async {
+  scanBarcode(BuildContext context) async {
     String result = await BarcodeService.instance.scanBarcode();
     if (result == '-1') {
-      print(
-          ' ==============================-barcodeResult $result-===============================');
+      CustomWidgets.showSnackBar(context: context, title: result);
     }
     barcodeResult = result;
     print(
