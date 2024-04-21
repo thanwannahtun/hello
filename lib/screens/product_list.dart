@@ -40,26 +40,34 @@ class _ProductListPageState extends State<ProductListPage> {
             builder: (context, state) {
               if (state.status == BlocStatus.fetchefailed) {
                 return Center(
-                  child: Text(state.error.toString()),
+                  child: Text(' Erro : ${state.error.toString()}'),
                 );
               } else if (state.status == BlocStatus.fetching) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state.status == BlocStatus.fetched) {
-                print('----------fetched state => ${state.products}');
-                return ListView.builder(
-                  itemCount: productList.length,
-                  itemBuilder: (context, index) {
-                    return showProducts(productList[index]);
-                  },
-                );
-              } else if (state.status == BlocStatus.initial) {
-                return CustomWidgets.showNoDataWiget(
-                  context: context,
-                  onPressed: () => _productBloc.add(ProductFetchEvent()),
-                );
-              } else {
-                return Container();
               }
+              if (state.status == BlocStatus.initial) {
+                return const Center(
+                  child: Text('No Data Found'),
+                );
+              }
+              if (productList.isEmpty) {
+                return Center(
+                  child: Icon(
+                    color: Theme.of(context)
+                        .floatingActionButtonTheme
+                        .backgroundColor,
+                    Icons.space_dashboard_rounded,
+                    size: 50,
+                  ),
+                );
+              }
+              print('----------fetched state => ${state.products}');
+              return ListView.builder(
+                itemCount: productList.length,
+                itemBuilder: (context, index) {
+                  return showProducts(productList[index]);
+                },
+              );
             },
             listener: (context, state) {
               if (state.status == BlocStatus.fetched) {
@@ -72,9 +80,7 @@ class _ProductListPageState extends State<ProductListPage> {
               } else if (state.status == BlocStatus.fetching) {
                 CustomWidgets.showSnackBar(
                     context: context, title: state.message);
-              }else {
-                
-              }
+              } else {}
             },
           ),
         ),
@@ -94,14 +100,21 @@ class _ProductListPageState extends State<ProductListPage> {
   }
 
   Widget showProducts(Product product) {
+    TextStyle textStyle = TextStyle(
+        color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+        fontSize: 20,
+        fontWeight: FontWeight.bold);
     debugPrint('here');
     return InkWell(
       onTap: () => Navigator.of(context)
           .pushNamed(RouteLists.productPage, arguments: {'product': product}),
-      child: ListTile(
-        title: Text(product.productName ?? 'product Name'),
-        trailing: Text(product.unit ?? 'unit'),
-        subtitle: Text('barcode : ${product.barcode}'),
+      child: Card(
+        child: ListTile(
+          title: Text('product : ${product.productName ?? 'product Name'}',
+              style: textStyle),
+          trailing: Text('unit : ${product.unit ?? 'unit'}', style: textStyle),
+          subtitle: Text('barcode : ${product.barcode}', style: textStyle),
+        ),
       ),
     );
   }

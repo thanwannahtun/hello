@@ -29,7 +29,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
 
   FutureOr<void> _addToInventory(
       InventoryAddEvent event, Emitter<InventoryState> emit) async {
-    emit(state.copyWith(status: BlocStatus.adding, message: 'adding '));
+    // emit(state.copyWith(status: BlocStatus.adding, message: 'adding '));
 
 /*
   int? inventoryId;
@@ -72,7 +72,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
 
   FutureOr<void> _getAllInventoryLists(
       InventoryFetchEvent event, Emitter<InventoryState> emit) async {
-    emit(state.copyWith(status: BlocStatus.fetching, message: 'fetching...'));
+    // emit(state.copyWith(status: BlocStatus.fetching, message: 'fetching...'));
     try {
       List<Inventory> inventoryList = await getInventoryLists();
       emit(state.copyWith(

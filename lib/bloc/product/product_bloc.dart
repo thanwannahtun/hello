@@ -20,9 +20,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             status: BlocStatus.initial, error: '', message: '', products: [])) {
     on<ProductFetchEvent>(_fetchProduct);
     on<ProductAddEvent>(_addProduct);
+    on<ProductUpdateEvent>(_updateProduct);
   }
 
-  _fetchAllProducts() async {
+  Future<List<Product>> _fetchAllProducts() async {
     List<Map<String, dynamic>> productList = await _productRepo.fetchProducts();
     List<Product> products =
         productList.map((e) => Product.fromJson(e)).toList();
@@ -31,9 +32,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   FutureOr<void> _fetchProduct(
       ProductFetchEvent event, Emitter<ProductState> emit) async {
-    emit(
-      state.copyWith(status: BlocStatus.fetching, message: 'fetching...'),
-    );
+    // emit(
+    //   state.copyWith(status: BlocStatus.fetching, message: 'fetching...'),
+    // );
     debugPrint('========== fetch Product =========');
     try {
       List<Product> products = await _fetchAllProducts();
@@ -65,7 +66,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             error: 'Failed adding products ( ${event.product.productName} )'));
       }
       print('success!');
-
+      // _fetchProduct()
       emit(state.copyWith(
           status: BlocStatus.added,
           message: 'Successfully added ( ${event.product.productName} )'));
@@ -74,6 +75,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(state.copyWith(
           status: BlocStatus.addfailed,
           error: 'Error adding products ( ${event.product.productName} )'));
+    }
+  }
+
+  FutureOr<void> _updateProduct(
+      ProductUpdateEvent event, Emitter<ProductState> emit) async {
+    try {
+      await _productRepo.updateProduct(product: event.product);
+    } catch (e) {
+      print(
+          'Error Updating Product ( ${event.product.productName} , error : $e )');
     }
   }
 }

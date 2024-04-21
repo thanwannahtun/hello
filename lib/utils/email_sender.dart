@@ -196,24 +196,41 @@
 //   }
 // }
 
-/*
+// import 'package:flutter/material.dart';
+// import 'package:flutter/widgets.dart';
+// import 'package:hello/widgets/custom_widgets.dart';
 
-class EmailSender {
+// class EmailSender {
+//   Future<void> send(
+//       {required BuildContext context,
+//       String? body = '',
+//       String? subject = '',
+//       required String recipients,
+//       required List<String> attachments,
+//       bool? isHTML = false}) async {
+//     final Email email = Email(
+//       body: body,
+//       subject: subject,
+//       recipients: recipients,
+//       attachmentPaths: attachments,
+//       isHTML: isHTML,
+//     );
+//     String platformResponse;
 
+//     try {
+//       await FlutterEmailSender.send(email);
+//       platformResponse = 'success';
+//     } catch (error) {
+//       print(error);
+//       platformResponse = error.toString();
+//     }
 
+//     // if (!mounted) return;
 
-  send({required String body,}) async {
-    final Email email = Email(
-      body: body,
-      subject:subject,
-      recipients: recipeents,
-      attachmentPaths: attachments,
-      isHTML: isHTML,
-    );
-  }
-}
-
-
-
-
-*/
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(
+//         content: Text(platformResponse),
+//       ),
+//     );
+//   }
+// }

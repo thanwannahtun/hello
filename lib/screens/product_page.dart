@@ -20,7 +20,8 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   bool _isEdit = false;
   bool _isInitial = true;
-
+  // bool _isScanned = false;
+  bool isGeneraged = true;
   late Product _product;
 
   late String _productName;
@@ -33,9 +34,11 @@ class _ProductPageState extends State<ProductPage> {
 
   final double _keyboardHeight = 0;
 
-  // final _barcodeController = TextEditingController();
+  final _barcodeController = TextEditingController();
 
-  late int currentBarcode = 999000000000;
+  String _scannedBarcode = '';
+
+  late int _generatedbarcode = 999000000000;
 
   late SharePreference prefs;
 
@@ -49,7 +52,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Future<void> getGeneratedBarcode() async {
     prefs = SharePreference.instance;
-    currentBarcode = await prefs.getInt('generated_barcode') ?? 999000000000;
+    _generatedbarcode = await prefs.getInt('generated_barcode') ?? 999000000000;
     setState(() {});
   }
 
@@ -118,7 +121,7 @@ class _ProductPageState extends State<ProductPage> {
             onSave: (value) {
               if (value != null && value.isNotEmpty) {
                 setState(() {
-                  _unit = value;
+                  _unit = value.toString();
                 });
               }
             },
@@ -132,8 +135,16 @@ class _ProductPageState extends State<ProductPage> {
                 initialValue: _isEdit ? _product.barcode.toString() : '',
                 isNeglect: true,
                 onSave: (value) {
-                  _barcode = currentBarcode.toString();
-                  value = _barcode;
+                  if (isGeneraged) {
+                    _barcode = _generatedbarcode.toString();
+                    // _barcode = _scannedBarcode;
+                  } else {
+                    value = _scannedBarcode;
+                    _barcode = value;
+                  }
+                  // _barcode = value ?? _generatedbarcode.toString() || _barcode;
+                  // _barcode = _generatedbarcode.toString();
+                  // value = _barcode;
                   setState(() {});
                 },
               ),
@@ -181,6 +192,10 @@ class _ProductPageState extends State<ProductPage> {
         unit: _unit,
         barcode: _barcode,
       );
+      if (_isEdit) {
+        print('Edit = true , called update Bloc');
+        // _productBloc.add();
+      }
       _productBloc.add(ProductAddEvent(_product));
       print(_product.productName);
       Navigator.pop(context, true);
@@ -188,19 +203,26 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void _scanBarcode() async {
+    // _isScanned = true;
     print('barcode = $_barcode');
     String barcodeResult = await BarcodeService.instance.scanBarcode();
-    _barcode = barcodeResult;
+    // _barcode = barcodeResult;
+    _scannedBarcode = barcodeResult;
     print('barcode = $_barcode');
+    isGeneraged = false;
     setState(() {});
   }
 
   _generateBarcode() async {
-    currentBarcode++;
-    // isGenerated = true;
-    _barcode = currentBarcode.toString();
-    bool saved = await prefs.setInt('generated_barcode', currentBarcode);
-    print('-------------------------------------------------saved = $saved');
-    setState(() {});
+    if (isGeneraged) {
+      _generatedbarcode++;
+      _barcode = _generatedbarcode.toString();
+      print('after generating $_barcode');
+      bool saved = await prefs.setInt('generated_barcode', _generatedbarcode);
+      print('barcode saved to prefs = $saved');
+      setState(() {});
+    } else {
+      return;
+    }
   }
 }

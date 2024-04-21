@@ -7,14 +7,14 @@ class TableCreator {
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.productTable} (
       ${ConstantCulumn.productId} INTEGER PRIMARY KEY, 
       ${ConstantCulumn.productName} TEXT NOT NULL, 
-      ${ConstantCulumn.unit} REAL, 
+      ${ConstantCulumn.unit} TEXT, 
       ${ConstantCulumn.barcode} TEXT 
     )''',
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.inventoryTable} (
       ${ConstantCulumn.inventoryId} INTEGER PRIMAR Y KEY, 
       ${ConstantCulumn.productId} INTEGER, 
       ${ConstantCulumn.productName} TEXT NOT NULL, 
-      ${ConstantCulumn.unit} REAL,
+      ${ConstantCulumn.unit} TEXT,
       ${ConstantCulumn.onHand} REAL
     )'''
   ];
