@@ -72,10 +72,13 @@ class _ProductListPageState extends State<ProductListPage> {
               );
             },
             listener: (context, state) {
-              // if (state.status == BlocStatus.fetched) {
-              //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              //   productList = state.products;
-              // } else if (state.status == BlocStatus.fetchefailed) {
+              if (state.status == BlocStatus.added) {
+                // productList = state.products;
+              }
+              if (state.status == BlocStatus.fetched) {
+                // productList = state.products;
+              }
+              // else if (state.status == BlocStatus.fetchefailed) {
               //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
               //   CustomWidgets.showSnackBar(
               //       context: context, title: state.error);
@@ -92,15 +95,6 @@ class _ProductListPageState extends State<ProductListPage> {
           text: 'create product',
           onPressed: () {
             Navigator.of(context).pushNamed(RouteLists.productPage);
-            //     .then((value) {
-            //   if (value == true) {
-            //     print('+++++++++++++++++++++++++++++++++++++');
-            //     _productBloc.add(ProductFetchEvent());
-            //     setState(() {
-
-            //     });
-            //   }
-            // });
           },
         ));
   }

@@ -53,6 +53,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   FutureOr<void> _addProduct(
       ProductAddEvent event, Emitter<ProductState> emit) async {
     emit(state.copyWith(status: BlocStatus.adding, message: 'adding...'));
+
     debugPrint('========== Add Product =========');
 
     try {
@@ -64,14 +65,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             status: BlocStatus.addfailed,
             error: 'Failed adding products ( ${event.product.productName} )'));
       }
-      final temp = state.products;
-      temp.add(event.product);
+      final productCopy = List<Product>.from(state.products)
+        ..add(event.product);
 
-      debugPrint('----------------------------------------temp : $temp');
-
-      // _fetchProduct(ProductFetchEvent(), emit);
       emit(state.copyWith(
-          products: temp,
+          // products: temp,
+          products: productCopy,
           status: BlocStatus.added,
           message: 'Successfully added ( ${event.product.productName} )'));
     } catch (e) {

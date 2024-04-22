@@ -185,20 +185,29 @@ class _ProductPageState extends State<ProductPage> {
   void _saveForm() {
     debugPrint(
         '=> save form, validated = ${_formKey.currentState!.validate()}');
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      _product = Product(
-        productName: _productName,
-        unit: _unit,
-        barcode: _barcode,
-      );
-      if (_isEdit) {
-        // print('Edit = true , called update Bloc');
-        // _productBloc.add(ProductUpdateEvent(_product));
+    if (_isEdit) {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+        print('Edit = true , called update Bloc');
+        _product.productName = _productName;
+        _product.unit = _unit;
+        _product.barcode = _barcode;
+        _productBloc.add(ProductUpdateEvent(_product));
+        Navigator.pop(context, true);
       }
-      _productBloc.add(ProductAddEvent(_product));
-      print(_product.productName);
-      Navigator.pop(context, true);
+    } else {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+        _product = Product(
+          productName: _productName,
+          unit: _unit,
+          barcode: _barcode,
+        );
+
+        _productBloc.add(ProductAddEvent(_product));
+        print(_product.productName);
+        Navigator.pop(context, true);
+      }
     }
   }
 
