@@ -18,7 +18,7 @@ class _EmailSenderState extends State<EmailSender> {
   bool isHTML = false;
 
   final _recipientController = TextEditingController(
-    text: 'example@example.com',
+    text: 'my.thanwanna@gmail.com',
   );
 
   final _subjectController = TextEditingController(text: 'The subject');
@@ -61,6 +61,7 @@ class _EmailSenderState extends State<EmailSender> {
 
   @override
   void didChangeDependencies() {
+    debugPrint('called DidChangeDepencies!');
     if (_isInitial) {
       if (ModalRoute.of(context)?.settings.arguments != null) {
         Map<String, dynamic> arguments =
@@ -182,6 +183,8 @@ class _EmailSenderState extends State<EmailSender> {
 
   Future<void> _attachFileFromAppDocumentsDirectoy() async {
     String csvData = const ListToCsvConverter().convert(csvLists);
+
+    // if(csvData.isEmpty)csvData = "id,name,age,address,email,phone";
 
     try {
       final appDocumentDir = await getApplicationDocumentsDirectory();

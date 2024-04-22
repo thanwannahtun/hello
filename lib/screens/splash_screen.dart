@@ -137,7 +137,8 @@ class _SplashPageState extends State<SplashPage> {
 
       // debugPrint(' before csvLists ( $csvLists ) ');
 
-      csvLists.add([...rowForCSV]);
+      // csvLists.add([...rowForCSV]);
+      csvLists.add(rowForCSV);
       //  List<List<dynamic>> temp = [...csvLists,rowForCSV];
 
       debugPrint(' after csvLists ( $csvLists ) ');

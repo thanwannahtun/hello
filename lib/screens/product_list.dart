@@ -97,6 +97,7 @@ class _ProductListPageState extends State<ProductListPage> {
               if (value == true) {
                 print('+++++++++++++++++++++++++++++++++++++');
                 _productBloc.add(ProductFetchEvent());
+                setState(() {});
               }
             });
           },
