@@ -91,15 +91,16 @@ class _ProductListPageState extends State<ProductListPage> {
         floatingActionButton: CustomFloatingActionButton(
           text: 'create product',
           onPressed: () {
-            Navigator.of(context)
-                .pushNamed(RouteLists.productPage)
-                .then((value) {
-              if (value == true) {
-                print('+++++++++++++++++++++++++++++++++++++');
-                _productBloc.add(ProductFetchEvent());
-                setState(() {});
-              }
-            });
+            Navigator.of(context).pushNamed(RouteLists.productPage);
+            //     .then((value) {
+            //   if (value == true) {
+            //     print('+++++++++++++++++++++++++++++++++++++');
+            //     _productBloc.add(ProductFetchEvent());
+            //     setState(() {
+
+            //     });
+            //   }
+            // });
           },
         ));
   }

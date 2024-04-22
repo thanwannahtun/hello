@@ -34,7 +34,7 @@ class _ProductPageState extends State<ProductPage> {
 
   final double _keyboardHeight = 0;
 
-  final _barcodeController = TextEditingController();
+  // final _barcodeController = TextEditingController();
 
   String _scannedBarcode = '';
 
