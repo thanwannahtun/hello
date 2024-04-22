@@ -65,9 +65,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             status: BlocStatus.addfailed,
             error: 'Failed adding products ( ${event.product.productName} )'));
       }
+      final temp = state.products;
+      temp.add(event.product);
+
+      debugPrint('temp : $temp');
+
       print('success!');
-      // _fetchProduct()
+      // _fetchProduct(ProductFetchEvent(), emit);
       emit(state.copyWith(
+          products: temp,
           status: BlocStatus.added,
           message: 'Successfully added ( ${event.product.productName} )'));
     } catch (e) {

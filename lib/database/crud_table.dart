@@ -75,6 +75,12 @@ class CRUDTable {
     return _db.update(table, values, where: where, whereArgs: whereArgs);
   }
 
+  Future<int> updateData2(String table, Map<String, Object?> values,
+      {String? where, List<Object?>? whereArgs}) async {
+    await _getDatabase();
+    return _db.update(table, values, where: where, whereArgs: whereArgs);
+  }
+
   Future<int> deleteData(String table,
       {String? where, List<Object?>? whereArgs}) async {
     await _getDatabase();

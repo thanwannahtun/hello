@@ -23,8 +23,7 @@ class _ProductListPageState extends State<ProductListPage> {
   @override
   void initState() {
     super.initState();
-    _productBloc = BlocProvider.of<ProductBloc>(context)
-      ..add(ProductFetchEvent());
+    _productBloc = context.read<ProductBloc>()..add(ProductFetchEvent());
   }
 
   @override
@@ -50,6 +49,7 @@ class _ProductListPageState extends State<ProductListPage> {
                   child: Text('No Data Found'),
                 );
               }
+              productList = state.products;
               if (productList.isEmpty) {
                 return Center(
                   child: Icon(
@@ -61,7 +61,7 @@ class _ProductListPageState extends State<ProductListPage> {
                   ),
                 );
               }
-              print('----------fetched state => ${state.products}');
+              // print('----------fetched state => ${state.status}');
               return ListView.builder(
                 itemCount: productList.length,
                 itemBuilder: (context, index) {
@@ -70,17 +70,19 @@ class _ProductListPageState extends State<ProductListPage> {
               );
             },
             listener: (context, state) {
-              if (state.status == BlocStatus.fetched) {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                productList = state.products;
-              } else if (state.status == BlocStatus.fetchefailed) {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                CustomWidgets.showSnackBar(
-                    context: context, title: state.error);
-              } else if (state.status == BlocStatus.fetching) {
+              // if (state.status == BlocStatus.fetched) {
+              //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              //   productList = state.products;
+              // } else if (state.status == BlocStatus.fetchefailed) {
+              //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              //   CustomWidgets.showSnackBar(
+              //       context: context, title: state.error);
+              // } else
+              if (state.status == BlocStatus.fetching) {
                 CustomWidgets.showSnackBar(
                     context: context, title: state.message);
-              } else {}
+              }
+              //else {}
             },
           ),
         ),

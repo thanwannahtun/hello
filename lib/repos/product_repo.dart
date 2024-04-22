@@ -7,8 +7,6 @@ class ProductRepository {
   final CRUDTable _crudTable = CRUDTable.instance;
 
   Future<List<Map<String, dynamic>>> fetchProducts() async {
-    debugPrint(
-        ' fetched Products Map => ${await _crudTable.readData(ConstantTables.productTable)}');
     return await _crudTable.readData(ConstantTables.productTable);
   }
 
@@ -26,9 +24,11 @@ class ProductRepository {
   }
 
   Future<bool> updateProduct({required Product product}) async {
-    int value = await _crudTable.updateData(
-        table: ConstantTables.productTable, values: product.toJson());
-    return value > 0;
+    // int value = await _crudTable.updateData(
+    //     table: ConstantTables.productTable, values: product.toJson());
+    int v = await _crudTable.updateData2(
+        ConstantTables.productTable, product.toJson());
+    return v > 0;
   }
 
   Future<bool> deleteProduct({required Product product}) async {

@@ -11,6 +11,7 @@ import 'package:hello/utils/route_lists.dart';
 
 class RouteGenerator {
   Route generateRoute(RouteSettings settings) {
+    final productBloc = ProductBloc();
     switch (settings.name) {
       case RouteLists.itemChoose:
         return chooseRoute(
@@ -28,16 +29,18 @@ class RouteGenerator {
       //       builder: (context) => const EmailSender(), settings: settings);
       case RouteLists.productPage:
         return chooseRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) => ProductBloc(),
+            builder: (context) => BlocProvider.value(
+                  value: productBloc,
+                  // create: (context) => ProductBloc(),
                   child: const ProductPage(),
                 ),
             settings: settings);
 
       case RouteLists.productListPage:
         return chooseRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) => ProductBloc(),
+            builder: (context) => BlocProvider.value(
+                  value: productBloc,
+                  // create: (context) => ProductBloc(),
                   child: const ProductListPage(),
                 ),
             // builder: (context) => BlocProvider.value(

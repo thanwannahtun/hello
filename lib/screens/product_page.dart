@@ -193,8 +193,8 @@ class _ProductPageState extends State<ProductPage> {
         barcode: _barcode,
       );
       if (_isEdit) {
-        print('Edit = true , called update Bloc');
-        // _productBloc.add();
+        // print('Edit = true , called update Bloc');
+        // _productBloc.add(ProductUpdateEvent(_product));
       }
       _productBloc.add(ProductAddEvent(_product));
       print(_product.productName);
