@@ -46,35 +46,71 @@ class _ProductListPageState extends State<ProductListPage> {
               } else if (state.status == BlocStatus.fetching) {
                 return const Center(child: CircularProgressIndicator());
               }
+
               if (state.status == BlocStatus.initial) {
                 return const Center(
                   child: Text('No Data Found'),
                 );
               }
-              productList = state.products;
-              if (productList.isEmpty) {
-                return Center(
-                  child: Icon(
-                    color: Theme.of(context)
-                        .floatingActionButtonTheme
-                        .backgroundColor,
-                    Icons.space_dashboard_rounded,
-                    size: 50,
-                  ),
+
+              if (state.status == BlocStatus.fetched) {
+                productList = state.products;
+                if (productList.isEmpty) {
+                  return Center(
+                    child: Icon(
+                      color: Theme.of(context)
+                          .floatingActionButtonTheme
+                          .backgroundColor,
+                      Icons.space_dashboard_rounded,
+                      size: 50,
+                    ),
+                  );
+                }
+                // print('----------fetched state => ${state.status}');
+                return ListView.builder(
+                  itemCount: productList.length,
+                  itemBuilder: (context, index) {
+                    return showProducts(productList[index]);
+                  },
                 );
               }
-              // print('----------fetched state => ${state.status}');
-              return ListView.builder(
-                itemCount: productList.length,
-                itemBuilder: (context, index) {
-                  return showProducts(productList[index]);
-                },
-              );
+              return Container();
+              // productList = state.products;
+              // if (productList.isEmpty) {
+              //   return Center(
+              //     child: Icon(
+              //       color: Theme.of(context)
+              //           .floatingActionButtonTheme
+              //           .backgroundColor,
+              //       Icons.space_dashboard_rounded,
+              //       size: 50,
+              //     ),
+              //   );
+              // }
+              // // print('----------fetched state => ${state.status}');
+              // return ListView.builder(
+              //   itemCount: productList.length,
+              //   itemBuilder: (context, index) {
+              //     return showProducts(productList[index]);
+              //   },
+              // );
             },
             listener: (context, state) {
-              if (state.status == BlocStatus.added) {
-                // productList = state.products;
-              }
+              if (state.status == BlocStatus.addfailed) {
+              } else if (state.status == BlocStatus.adding) {
+              } else if (state.status == BlocStatus.added) {}
+              if (state.status == BlocStatus.updatefailed) {
+              } else if (state.status == BlocStatus.updating) {
+              } else if (state.status == BlocStatus.updated) {}
+              if (state.status == BlocStatus.deletefailed) {
+              } else if (state.status == BlocStatus.deleting) {
+              } else if (state.status == BlocStatus.updated) {}
+              // if (state.status == BlocStatus.added) {
+              //   // productList = state.products;
+              //      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              //     CustomWidgets.showSnackBar(
+              //         context: context, title: state.error);
+              // }
               if (state.status == BlocStatus.fetched) {
                 // productList = state.products;
               }
@@ -94,7 +130,8 @@ class _ProductListPageState extends State<ProductListPage> {
         floatingActionButton: CustomFloatingActionButton(
           text: 'create product',
           onPressed: () {
-            Navigator.of(context).pushNamed(RouteLists.productPage);
+            Navigator.pushNamed(context, RouteLists.productPage);
+            // Navigator.of(context).pushNamed(RouteLists.productPage);
           },
         ));
   }
@@ -105,8 +142,10 @@ class _ProductListPageState extends State<ProductListPage> {
         fontSize: 20,
         fontWeight: FontWeight.bold);
     return InkWell(
-      onTap: () => Navigator.of(context)
-          .pushNamed(RouteLists.productPage, arguments: {'product': product}),
+      onTap: () => Navigator.pushNamed(context, RouteLists.productPage,
+          arguments: {'product': product}),
+      // onTap: () => Navigator.of(context)
+      //     .pushNamed(RouteLists.productPage, arguments: {'product': product}),
       child: Card(
         child: ListTile(
           title: Text('product : ${product.productName ?? 'product Name'}',
