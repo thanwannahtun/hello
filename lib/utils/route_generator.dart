@@ -6,6 +6,7 @@ import 'package:hello/screens/no_route_page.dart';
 import 'package:hello/screens/product_list.dart';
 import 'package:hello/screens/product_page.dart';
 import 'package:hello/screens/splash_screen.dart';
+import 'package:hello/utils/email_sender.dart';
 // import 'package:hello/utils/email_sender.dart';
 import 'package:hello/utils/route_lists.dart';
 
@@ -24,9 +25,9 @@ class RouteGenerator {
                   )
                 ], child: const SplashPage()),
             settings: settings);
-      // case RouteLists.emailSenderPage:
-      //   return chooseRoute(
-      //       builder: (context) => const EmailSender(), settings: settings);
+      case RouteLists.emailSenderPage:
+        return chooseRoute(
+            builder: (context) => const EmailSender(), settings: settings);
       case RouteLists.productPage:
         return chooseRoute(
             builder: (context) => BlocProvider.value(

@@ -49,8 +49,9 @@ class _SplashPageState extends State<SplashPage> {
         title: const Text('Choose Items'),
         actions: [
           ElevatedButton(
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(RouteLists.emailSenderPage),
+              onPressed: () => Navigator.of(context).pushNamed(
+                  RouteLists.emailSenderPage,
+                  arguments: {'csv_list': csvLists}),
               child: const Text('Send Email'))
         ],
       ),

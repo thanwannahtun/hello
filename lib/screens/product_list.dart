@@ -38,8 +38,6 @@ class _ProductListPageState extends State<ProductListPage> {
           child: BlocConsumer<ProductBloc, ProductState>(
             builder: (context, state) {
               debugPrint('============== state : ${state.status}');
-              debugPrint(
-                  '============== products length : ${state.products.length}');
 
               if (state.status == BlocStatus.fetchefailed) {
                 return Center(
