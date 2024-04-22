@@ -18,10 +18,10 @@ class BaseDBHelper {
 
   Future<Database> get database async {
     if (_database != null) {
-      debugPrint('----------> database already exists!');
+      // debugPrint('----------> database already exists!');
       return _database!;
     }
-    debugPrint('-------------> database initialized !');
+    // debugPrint('-------------> database initialized !');
     _database = await _createDatabase();
     return _database!;
   }

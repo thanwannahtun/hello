@@ -37,6 +37,10 @@ class _ProductListPageState extends State<ProductListPage> {
           padding: const EdgeInsets.all(10),
           child: BlocConsumer<ProductBloc, ProductState>(
             builder: (context, state) {
+              debugPrint('============== state : ${state.status}');
+              debugPrint(
+                  '============== products length : ${state.products.length}');
+
               if (state.status == BlocStatus.fetchefailed) {
                 return Center(
                   child: Text(' Erro : ${state.error.toString()}'),
@@ -106,7 +110,6 @@ class _ProductListPageState extends State<ProductListPage> {
         color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
         fontSize: 20,
         fontWeight: FontWeight.bold);
-    debugPrint('here');
     return InkWell(
       onTap: () => Navigator.of(context)
           .pushNamed(RouteLists.productPage, arguments: {'product': product}),

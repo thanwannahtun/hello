@@ -35,7 +35,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     // emit(
     //   state.copyWith(status: BlocStatus.fetching, message: 'fetching...'),
     // );
-    debugPrint('========== fetch Product =========');
     try {
       List<Product> products = await _fetchAllProducts();
 
@@ -68,9 +67,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       final temp = state.products;
       temp.add(event.product);
 
-      debugPrint('temp : $temp');
+      debugPrint('----------------------------------------temp : $temp');
 
-      print('success!');
       // _fetchProduct(ProductFetchEvent(), emit);
       emit(state.copyWith(
           products: temp,
