@@ -21,6 +21,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<ProductFetchEvent>(_fetchProduct);
     on<ProductAddEvent>(_addProduct);
     on<ProductUpdateEvent>(_updateProduct);
+    on<ProductDeleteEvent>(_deleteProduct);
   }
 
   Future<List<Product>> _fetchAllProducts() async {
@@ -53,41 +54,126 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   FutureOr<void> _addProduct(
       ProductAddEvent event, Emitter<ProductState> emit) async {
     emit(state.copyWith(status: BlocStatus.adding, message: 'adding...'));
-
-    debugPrint('========== Add Product =========');
-
     try {
       bool isAdded = await _productRepo.addProduct(event.product.toJson());
       if (!isAdded) {
-        print('fail!');
         emit(state.copyWith(
-            // products: state.products,
             status: BlocStatus.addfailed,
-            error: 'Failed adding products ( ${event.product.productName} )'));
+            error:
+                'Failed to Adding ${event.product.productName} , isAdded = $isAdded'));
+      } else {
+        emit(state.copyWith(
+            status: BlocStatus.added,
+            message: 'successfully added ${event.product.productName}'));
       }
-      final productCopy = List<Product>.from(state.products)
-        ..add(event.product);
-
-      emit(state.copyWith(
-          // products: temp,
-          products: productCopy,
-          status: BlocStatus.added,
-          message: 'Successfully added ( ${event.product.productName} )'));
+      final products = await _fetchAllProducts();
+      return emit(
+          state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
-      debugPrint('Error Adding Products ( $e )');
       emit(state.copyWith(
           status: BlocStatus.addfailed,
-          error: 'Error adding products ( ${event.product.productName} )'));
+          message: 'Error Adding  ${event.product.productName} : error : $e'));
     }
   }
+  /*
+   emit(AddTasksSuccess());
+      final tasks = await taskRepository.getTasks();
+      return emit(FetchTasksSuccess(tasks: tasks));
+  */
+
+  // FutureOr<void> _addProduct(
+  //     ProductAddEvent event, Emitter<ProductState> emit) async {
+  //   emit(state.copyWith(status: BlocStatus.adding, message: 'adding...'));
+
+  //   debugPrint('========== Add Product =========');
+
+  //   try {
+  //     bool isAdded = await _productRepo.addProduct(event.product.toJson());
+  //     if (!isAdded) {
+  //       print('fail!');
+  //       emit(state.copyWith(
+  //           // products: state.products,
+  //           status: BlocStatus.addfailed,
+  //           error: 'Failed adding products ( ${event.product.productName} )'));
+  //     }
+  //     final productCopy = List<Product>.from(state.products)
+  //       ..add(event.product);
+
+  //     emit(state.copyWith(
+  //         // products: temp,
+  //         products: productCopy,
+  //         status: BlocStatus.added,
+  //         message: 'Successfully added ( ${event.product.productName} )'));
+  //   } catch (e) {
+  //     debugPrint('Error Adding Products ( $e )');
+  //     emit(state.copyWith(
+  //         status: BlocStatus.addfailed,
+  //         error: 'Error adding products ( ${event.product.productName} )'));
+  //   }
+  // }
 
   FutureOr<void> _updateProduct(
       ProductUpdateEvent event, Emitter<ProductState> emit) async {
+    emit(state.copyWith(status: BlocStatus.updating, message: 'updating...'));
     try {
-      await _productRepo.updateProduct(product: event.product);
+      bool isUpdated = await _productRepo.updateProduct(product: event.product);
+      if (!isUpdated) {
+        emit(state.copyWith(
+            status: BlocStatus.updatefailed,
+            error:
+                'Failed to Updating ${event.product.productName} , isUpdated = $isUpdated'));
+      } else {
+        emit(state.copyWith(
+            status: BlocStatus.updated,
+            message: 'successfully updated ${event.product.productName}'));
+      }
+      final products = await _fetchAllProducts();
+      emit(state.copyWith(
+        status: BlocStatus.fetched,
+        products: products,
+      ));
     } catch (e) {
-      print(
-          'Error Updating Product ( ${event.product.productName} , error : $e )');
+      emit(state.copyWith(
+          status: BlocStatus.updatefailed,
+          message:
+              'Error Updating  ${event.product.productName} : error : $e'));
+    }
+  }
+
+  // FutureOr<void> _updateProduct(
+  //     ProductUpdateEvent event, Emitter<ProductState> emit) async {
+  //   try {
+  //     await _productRepo.updateProduct(product: event.product);
+  //   } catch (e) {
+  //     print(
+  //         'Error Updating Product ( ${event.product.productName} , error : $e )');
+  //   }
+  // }
+
+  FutureOr<void> _deleteProduct(
+      ProductDeleteEvent event, Emitter<ProductState> emit) async {
+    emit(state.copyWith(status: BlocStatus.deleting, message: 'deleting...'));
+
+    try {
+      bool isDeleted = await _productRepo.deleteProduct(product: event.product);
+
+      if (!isDeleted) {
+        emit(state.copyWith(
+            status: BlocStatus.deletefailed,
+            error:
+                'Failed to Deleting ${event.product.productName} , deleted = $isDeleted'));
+      } else {
+        emit(state.copyWith(
+            status: BlocStatus.deleted,
+            message: 'successfully deleted ${event.product.productName}'));
+      }
+      final products = await _fetchAllProducts();
+      emit(state.copyWith(status: BlocStatus.fetched, products: products));
+    } catch (e) {
+      emit(state.copyWith(
+          status: BlocStatus.deletefailed,
+          message:
+              'Error Deleting  ${event.product.productName} : error : $e'));
     }
   }
 }
