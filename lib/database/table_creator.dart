@@ -15,10 +15,12 @@ class TableCreator {
       ${ConstantCulumn.productId} INTEGER, 
       ${ConstantCulumn.productName} TEXT NOT NULL, 
       ${ConstantCulumn.unit} TEXT,
+      ${ConstantCulumn.barcode} TEXT,
       ${ConstantCulumn.onHand} REAL
     )'''
   ];
 
+// (1) table inventory_table has no column named barcode in "INSERT INTO inventory_table (product_id, product_name, unit, barcode) VALUES (?, ?, ?, ?)"
   static Future<void> createTables(Database db) async {
     for (var table in _tables) {
       await db.execute(table);

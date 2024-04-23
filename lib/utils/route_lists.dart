@@ -4,4 +4,5 @@ class RouteLists {
   static const String productPage = 'product_page';
   static const String itemChoose = 'item_choose';
   static const String emailSenderPage = 'email_send_page';
+  static const String inventoryPage = 'inventory_page';
 }

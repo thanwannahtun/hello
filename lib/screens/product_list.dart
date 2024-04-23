@@ -37,13 +37,15 @@ class _ProductListPageState extends State<ProductListPage> {
           padding: const EdgeInsets.all(10),
           child: BlocConsumer<ProductBloc, ProductState>(
             builder: (context, state) {
-              debugPrint('============== state : ${state.status}');
+              debugPrint(
+                  '============== state : ${state.status} products : ${state.products}');
 
               if (state.status == BlocStatus.fetchefailed) {
                 return Center(
                   child: Text(' Erro : ${state.error.toString()}'),
                 );
-              } else if (state.status == BlocStatus.fetching) {
+              }
+              if (state.status == BlocStatus.fetching) {
                 return const Center(child: CircularProgressIndicator());
               }
 
@@ -73,8 +75,9 @@ class _ProductListPageState extends State<ProductListPage> {
                     return showProducts(productList[index]);
                   },
                 );
+              } else {
+                return Container();
               }
-              return Container();
               // productList = state.products;
               // if (productList.isEmpty) {
               //   return Center(
@@ -96,41 +99,44 @@ class _ProductListPageState extends State<ProductListPage> {
               // );
             },
             listener: (context, state) {
-              if (state.status == BlocStatus.addfailed) {
-              } else if (state.status == BlocStatus.adding) {
-              } else if (state.status == BlocStatus.added) {}
-              if (state.status == BlocStatus.updatefailed) {
-              } else if (state.status == BlocStatus.updating) {
-              } else if (state.status == BlocStatus.updated) {}
-              if (state.status == BlocStatus.deletefailed) {
-              } else if (state.status == BlocStatus.deleting) {
-              } else if (state.status == BlocStatus.updated) {}
-              // if (state.status == BlocStatus.added) {
-              //   // productList = state.products;
-              //      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              //     CustomWidgets.showSnackBar(
-              //         context: context, title: state.error);
-              // }
+              // if (state.status == BlocStatus.addfailed) {
+              // } else if (state.status == BlocStatus.adding) {
+              // } else if (state.status == BlocStatus.added) {}
+              // if (state.status == BlocStatus.updatefailed) {
+              // } else if (state.status == BlocStatus.updating) {
+              // } else if (state.status == BlocStatus.updated) {}
+              // if (state.status == BlocStatus.deletefailed) {
+              // } else if (state.status == BlocStatus.deleting) {
+              // } else if (state.status == BlocStatus.updated) {}
+              // // if (state.status == BlocStatus.added) {
+              // //   // productList = state.products;
+              // //      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              // //     CustomWidgets.showSnackBar(
+              // //         context: context, title: state.error);
+              // // }
               if (state.status == BlocStatus.fetched) {
-                // productList = state.products;
+                print('listener prducts : ${state.products}');
+                productList = state.products;
               }
-              // else if (state.status == BlocStatus.fetchefailed) {
-              //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              // // else if (state.status == BlocStatus.fetchefailed) {
+              // //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              // //   CustomWidgets.showSnackBar(
+              // //       context: context, title: state.error);
+              // // } else
+              // if (state.status == BlocStatus.fetching) {
               //   CustomWidgets.showSnackBar(
-              //       context: context, title: state.error);
-              // } else
-              if (state.status == BlocStatus.fetching) {
-                CustomWidgets.showSnackBar(
-                    context: context, title: state.message);
-              }
-              //else {}
+              //       context: context, title: state.message);
+              // }
+              // //else {}
             },
           ),
         ),
         floatingActionButton: CustomFloatingActionButton(
           text: 'create product',
           onPressed: () {
-            Navigator.pushNamed(context, RouteLists.productPage);
+            Navigator.pushNamed(context, RouteLists.productPage).then((value) =>
+                _productBloc = context.read<ProductBloc>()
+                  ..add(ProductFetchEvent()));
             // Navigator.of(context).pushNamed(RouteLists.productPage);
           },
         ));

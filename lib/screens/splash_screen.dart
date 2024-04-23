@@ -36,7 +36,8 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     _productBloc = context.read<ProductBloc>()..add(ProductFetchEvent());
     _inventoryBloc = context.read<InventoryBloc>();
-    debugPrint('init state : products ( ${_inventoryBloc.state.props} ) ');
+    debugPrint('init state : invenoreis ( ${_inventoryBloc.state.props} ) ');
+    debugPrint('init state : products ( ${_productBloc.state.props} ) ');
   }
 
   @override
@@ -60,6 +61,8 @@ class _SplashPageState extends State<SplashPage> {
         padding: const EdgeInsets.all(8.0),
         child: BlocConsumer<ProductBloc, ProductState>(
           listener: (context, state) {
+            print('listener : ${state.products}');
+
             switch (state.status) {
               case BlocStatus.fetched:
                 products = state.products;
@@ -78,6 +81,8 @@ class _SplashPageState extends State<SplashPage> {
             }
           },
           builder: (context, state) {
+            print('builder : ${state.products.length}');
+
             if (state.status == BlocStatus.fetching) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -86,15 +91,34 @@ class _SplashPageState extends State<SplashPage> {
               return Text(state.error);
             } else {
               if (scannedProducts.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Scan the Products',
-                    style: TextStyle(
-                        fontSize: 90,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green),
-                  ),
-                );
+                return Center(
+                    // child: Text(
+                    //   'Scan the Products',
+                    //   style: TextStyle(
+                    //       fontSize: 90,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.green),
+                    // ),
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.qr_code_scanner,
+                      size: 200,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                        onPressed: () => scanBarcode(context),
+                        child: const Text(
+                          'Scan Barcode',
+                          style: TextStyle(
+                              color: Colors.green, fontWeight: FontWeight.bold),
+                        ))
+                  ],
+                ));
               }
               return ScannedProducts(products: scannedProducts);
             }
@@ -114,19 +138,22 @@ class _SplashPageState extends State<SplashPage> {
     debugPrint(' Scanner result : $result ');
     if (result == '-1') {
       // ignore: use_build_context_synchronously
-      CustomWidgets.showSnackBar(context: context, title: result);
+      CustomWidgets.showSnackBar(context: context, title: "Failed to Scan");
     }
     // barcodeResult = result;
     int index = products.indexWhere((element) => element.barcode == result);
 
     if (index == -1) {
-      CustomWidgets.showSnackBar(
-          context: context, title: '( index : $index ) ');
+      CustomWidgets.showSnackBar(context: context, title: 'No product Found!');
       debugPrint(' No Barcode Found ! ( index : $index ) ');
     } else {
       Product product = products[index];
       scannedProducts.add(product);
-      _inventoryBloc.add(InventoryUpdateCountEvent(product));
+      // _inventoryBloc.add(InventoryUpdateCountEvent(product));
+      print('-------------------inventory splash screen');
+      // _inventoryBloc.add(InventoryAddOrUpdateEvent(product));
+      _inventoryBloc.add(InventoryAddEvent(product));
+      print('--------|-----------inventory splash screen');
 
       List<dynamic> rowForCSV = [
         product.productId,

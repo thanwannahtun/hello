@@ -20,3 +20,8 @@ class InventoryRemoveEvent extends InventoryEvent {
   final Product product;
   InventoryRemoveEvent(this.product);
 }
+
+class InventoryAddOrUpdateEvent extends InventoryEvent {
+  final Product product;
+  InventoryAddOrUpdateEvent(this.product);
+}

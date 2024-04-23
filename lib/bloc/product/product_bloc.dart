@@ -39,7 +39,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       List<Product> products = await _fetchAllProducts();
 
-      debugPrint('fetched products  => $products');
+      debugPrint('fetched products  (Bloc) => $products');
       emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
       emit(
@@ -67,19 +67,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             message: 'successfully added ${event.product.productName}'));
       }
       final products = await _fetchAllProducts();
-      return emit(
-          state.copyWith(status: BlocStatus.fetched, products: products));
+      // final productsList = await _productRepo.fetchProducts();
+      // final products = productsList.map((e) => Product.fromJson(e)).toList();
+      print('--------------------bloc ($products)');
+      emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
       emit(state.copyWith(
           status: BlocStatus.addfailed,
           message: 'Error Adding  ${event.product.productName} : error : $e'));
     }
   }
-  /*
-   emit(AddTasksSuccess());
-      final tasks = await taskRepository.getTasks();
-      return emit(FetchTasksSuccess(tasks: tasks));
-  */
 
   // FutureOr<void> _addProduct(
   //     ProductAddEvent event, Emitter<ProductState> emit) async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hello/bloc/inventory/inventory_bloc.dart';
 import 'package:hello/bloc/product/product_bloc.dart';
+import 'package:hello/screens/inventory_page.dart';
 import 'package:hello/screens/no_route_page.dart';
 import 'package:hello/screens/product_list.dart';
 import 'package:hello/screens/product_page.dart';
@@ -28,6 +29,13 @@ class RouteGenerator {
       case RouteLists.emailSenderPage:
         return chooseRoute(
             builder: (context) => const EmailSender(), settings: settings);
+      case RouteLists.inventoryPage:
+        return chooseRoute(
+            builder: (context) => BlocProvider.value(
+                value: InventoryBloc(),
+                // create: (context) => ProductBloc(),
+                child: const InventoryLists()),
+            settings: settings);
       case RouteLists.productPage:
         return chooseRoute(
             builder: (context) => BlocProvider.value(

@@ -25,6 +25,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     on<InventoryAddEvent>(_addToInventory);
     on<InventoryFetchEvent>(_getAllInventoryLists);
     on<InventoryUpdateCountEvent>(_inventoryUpdateCount);
+    on<InventoryAddOrUpdateEvent>(_inventoryAddOrUpdate);
   }
 
   FutureOr<void> _addToInventory(
@@ -64,6 +65,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
   Future<List<Inventory>> getInventoryLists() async {
     List<Map<String, dynamic>> inventoryMap =
         await _inventoryRepo.getInventoryLists();
+    debugPrint('Fetched inventoryMap =: $inventoryMap');
 
     List<Inventory> inventoryList =
         inventoryMap.map((e) => Inventory.fromJson(e)).toList();
@@ -75,6 +77,8 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     // emit(state.copyWith(status: BlocStatus.fetching, message: 'fetching...'));
     try {
       List<Inventory> inventoryList = await getInventoryLists();
+      print('===============================');
+      print(inventoryList);
       emit(state.copyWith(
           status: BlocStatus.fetched, inventoryLists: inventoryList));
     } catch (e) {
@@ -111,6 +115,30 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       emit(state.copyWith(
           status: BlocStatus.updatefailed,
           error: 'Error Updating To Inventory $e'));
+    }
+  }
+
+  FutureOr<void> _inventoryAddOrUpdate(
+      InventoryAddOrUpdateEvent event, Emitter<InventoryState> emit) async {
+    try {
+      final inventories = await getInventoryLists();
+      int index = inventories.indexWhere(
+          (inventory) => inventory.productId == event.product.productId);
+      if (index == -1) {
+        //add to Inventory
+        await _inventoryRepo.addToInventory(values: event.product.toJson());
+      } else {
+        //update to Invenotry
+        await _inventoryRepo.updateCount(values: event.product.toJson());
+      }
+      final inventoriesLists = await getInventoryLists();
+      print('added success');
+      emit(state.copyWith(
+          status: BlocStatus.fetched, inventoryLists: inventoriesLists));
+    } catch (e) {
+      emit(state.copyWith(
+          status: BlocStatus.addfailed,
+          error: 'Error at InventoryAddOrUpdateEvent '));
     }
   }
 }

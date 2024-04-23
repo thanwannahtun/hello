@@ -4,6 +4,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
       appBarTheme: const AppBarTheme(color: Color(0xFF10B401)),
       // primaryColor: const Color(0xFFC3E8F6),
+      textTheme: const TextTheme(titleLarge: TextStyle(color: Colors.green)),
       elevatedButtonTheme: const ElevatedButtonThemeData(
           style: ButtonStyle(
         textStyle: MaterialStatePropertyAll(TextStyle(color: Colors.green)),

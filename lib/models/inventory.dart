@@ -4,12 +4,14 @@ class Inventory {
       this.productId,
       this.productName,
       this.unit,
+      this.barcode,
       this.onHand});
 
   int? inventoryId;
   int? productId;
   String? productName;
   String? unit;
+  String? barcode;
   double? onHand;
 
   factory Inventory.fromJson(Map<String, dynamic> json) => Inventory(
@@ -17,6 +19,7 @@ class Inventory {
         productId: json['product_id'] as int,
         productName: json['product_name'] as String,
         unit: json['unit'],
+        barcode: json['barcode'],
         onHand: json['on_hand'],
       );
 
@@ -26,6 +29,7 @@ class Inventory {
     map['product_id'] = productId;
     map['product_name'] = productName;
     map['unit'] = unit;
+    map['barcode'] = barcode;
     map['on_hand'] = onHand;
     return map;
   }
@@ -35,12 +39,14 @@ class Inventory {
       int? productId,
       String? productName,
       String? unit,
+      String? barcode,
       double? onHand}) {
     return Inventory(
         inventoryId: inventoryId ?? this.inventoryId,
         productId: productId ?? this.productId,
         productName: productName ?? this.productName,
         unit: unit ?? this.unit,
+        barcode: barcode ?? this.barcode,
         onHand: onHand ?? this.onHand);
   }
 }
