@@ -18,7 +18,7 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   late ProductBloc _productBloc;
 
-  List<Product> productList = [];
+  // List<Product> productList = [];
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _ProductListPageState extends State<ProductListPage> {
         drawer: const CustomDrawer(),
         body: Padding(
           padding: const EdgeInsets.all(10),
-          child: BlocConsumer<ProductBloc, ProductState>(
+          child: BlocBuilder<ProductBloc, ProductState>(
             builder: (context, state) {
               debugPrint(
                   '============== state : ${state.status} products : ${state.products}');
@@ -55,91 +55,41 @@ class _ProductListPageState extends State<ProductListPage> {
                 );
               }
 
-              if (state.status == BlocStatus.fetched) {
-                productList = state.products;
-                if (productList.isEmpty) {
-                  return Center(
-                    child: Icon(
-                      color: Theme.of(context)
-                          .floatingActionButtonTheme
-                          .backgroundColor,
-                      Icons.space_dashboard_rounded,
-                      size: 50,
-                    ),
-                  );
-                }
-                // print('----------fetched state => ${state.status}');
-                return ListView.builder(
-                  itemCount: productList.length,
-                  itemBuilder: (context, index) {
-                    return showProducts(productList[index]);
-                  },
-                );
-              } else {
-                return Container();
-              }
+              // if (state.status == BlocStatus.fetched) {
               // productList = state.products;
-              // if (productList.isEmpty) {
-              //   return Center(
-              //     child: Icon(
-              //       color: Theme.of(context)
-              //           .floatingActionButtonTheme
-              //           .backgroundColor,
-              //       Icons.space_dashboard_rounded,
-              //       size: 50,
-              //     ),
-              //   );
-              // }
-              // // print('----------fetched state => ${state.status}');
-              // return ListView.builder(
-              //   itemCount: productList.length,
-              //   itemBuilder: (context, index) {
-              //     return showProducts(productList[index]);
-              //   },
-              // );
-            },
-            listener: (context, state) {
-              // if (state.status == BlocStatus.addfailed) {
-              // } else if (state.status == BlocStatus.adding) {
-              // } else if (state.status == BlocStatus.added) {}
-              // if (state.status == BlocStatus.updatefailed) {
-              // } else if (state.status == BlocStatus.updating) {
-              // } else if (state.status == BlocStatus.updated) {}
-              // if (state.status == BlocStatus.deletefailed) {
-              // } else if (state.status == BlocStatus.deleting) {
-              // } else if (state.status == BlocStatus.updated) {}
-              // // if (state.status == BlocStatus.added) {
-              // //   // productList = state.products;
-              // //      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              // //     CustomWidgets.showSnackBar(
-              // //         context: context, title: state.error);
-              // // }
-              if (state.status == BlocStatus.fetched) {
-                print('listener prducts : ${state.products}');
-                productList = state.products;
+              if (state.products.isEmpty) {
+                return Center(
+                  child: Icon(
+                    color: Theme.of(context)
+                        .floatingActionButtonTheme
+                        .backgroundColor,
+                    Icons.space_dashboard_rounded,
+                    size: 50,
+                  ),
+                );
               }
-              // // else if (state.status == BlocStatus.fetchefailed) {
-              // //   ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              // //   CustomWidgets.showSnackBar(
-              // //       context: context, title: state.error);
-              // // } else
-              // if (state.status == BlocStatus.fetching) {
-              //   CustomWidgets.showSnackBar(
-              //       context: context, title: state.message);
-              // }
-              // //else {}
+              // print('----------fetched state => ${state.status}');
+              return ListView.builder(
+                itemCount: state.products.length,
+                itemBuilder: (context, index) {
+                  return showProducts(state.products[index]);
+                },
+              );
             },
           ),
         ),
         floatingActionButton: CustomFloatingActionButton(
-          text: 'create product',
-          onPressed: () {
-            Navigator.pushNamed(context, RouteLists.productPage).then((value) =>
-                _productBloc = context.read<ProductBloc>()
-                  ..add(ProductFetchEvent()));
-            // Navigator.of(context).pushNamed(RouteLists.productPage);
-          },
-        ));
+            text: 'create product',
+            onPressed: () {
+              Navigator.pushNamed(context, RouteLists.productPage)
+                  .then((value) {
+                if (value == true && value != null) {
+                  _productBloc.add(ProductFetchEvent());
+                }
+              });
+
+              // Navigator.of(context).pushNamed(RouteLists.productPage);
+            }));
   }
 
   Widget showProducts(Product product) {
@@ -148,18 +98,26 @@ class _ProductListPageState extends State<ProductListPage> {
         fontSize: 20,
         fontWeight: FontWeight.bold);
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, RouteLists.productPage,
-          arguments: {'product': product}),
-      // onTap: () => Navigator.of(context)
-      //     .pushNamed(RouteLists.productPage, arguments: {'product': product}),
-      child: Card(
-        child: ListTile(
-          title: Text('product : ${product.productName ?? 'product Name'}',
-              style: textStyle),
-          trailing: Text('unit : ${product.unit ?? 'unit'}', style: textStyle),
-          subtitle: Text('barcode : ${product.barcode}', style: textStyle),
-        ),
-      ),
-    );
+        onTap: () => Navigator.pushNamed(context, RouteLists.productPage,
+            arguments: {'product': product}),
+        // onTap: () => Navigator.of(context)
+        //     .pushNamed(RouteLists.productPage, arguments: {'product': product}),
+
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('product :  ${product.productName ?? 'product Name'}',
+                    style: textStyle),
+                Text('unit        :  ${product.unit ?? 'unit'}',
+                    style: textStyle),
+                Text('barcode :  ${product.barcode}', style: textStyle),
+              ],
+            ),
+          ),
+        ));
   }
 }

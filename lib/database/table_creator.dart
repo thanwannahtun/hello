@@ -11,7 +11,7 @@ class TableCreator {
       ${ConstantCulumn.barcode} TEXT 
     )''',
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.inventoryTable} (
-      ${ConstantCulumn.inventoryId} INTEGER PRIMAR Y KEY, 
+      ${ConstantCulumn.inventoryId} INTEGER PRIMARY KEY, 
       ${ConstantCulumn.productId} INTEGER, 
       ${ConstantCulumn.productName} TEXT NOT NULL, 
       ${ConstantCulumn.unit} TEXT,

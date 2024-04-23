@@ -66,10 +66,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             status: BlocStatus.added,
             message: 'successfully added ${event.product.productName}'));
       }
-      final products = await _fetchAllProducts();
+      state.products.add(event.product);
+
+      List<Product> products = await _fetchAllProducts();
       // final productsList = await _productRepo.fetchProducts();
       // final products = productsList.map((e) => Product.fromJson(e)).toList();
-      print('--------------------bloc ($products)');
+      print(
+          '--------------------bloc ($products) ${products.last.productName}');
       emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
       emit(state.copyWith(
@@ -124,7 +127,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             status: BlocStatus.updated,
             message: 'successfully updated ${event.product.productName}'));
       }
-      final products = await _fetchAllProducts();
+      List<Product> products = await _fetchAllProducts();
       emit(state.copyWith(
         status: BlocStatus.fetched,
         products: products,
@@ -164,7 +167,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             status: BlocStatus.deleted,
             message: 'successfully deleted ${event.product.productName}'));
       }
-      final products = await _fetchAllProducts();
+      List<Product> products = await _fetchAllProducts();
       emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
       emit(state.copyWith(

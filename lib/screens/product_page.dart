@@ -173,10 +173,10 @@ class _ProductPageState extends State<ProductPage> {
           const SizedBox(
             width: 5,
           ),
-          // isGenerated
-          //     ? BarcodeService.instance
-          //         .showGeneratedBarcode(data: _barcode)
-          //     : Container(),
+          // if (_isEdit)
+          //   isGeneraged
+          //       ? BarcodeService.instance.showGeneratedBarcode(data: _barcode)
+          //       : Container(),
         ],
       ),
     );
@@ -193,6 +193,8 @@ class _ProductPageState extends State<ProductPage> {
         _product.unit = _unit;
         _product.barcode = _barcode;
         _productBloc.add(ProductUpdateEvent(_product));
+        // _productBloc.add(ProductUpdateEvent(_product.copyWith(
+        //     productName: _productName, barcode: _barcode, unit: _unit)));
         Navigator.pop(context, true);
       }
     } else {
@@ -205,7 +207,10 @@ class _ProductPageState extends State<ProductPage> {
         );
 
         _productBloc.add(ProductAddEvent(_product));
+        // _productBloc.add(ProductUpdateEvent(_product.copyWith(
+        // productName: _productName, barcode: _barcode, unit: _unit)));
         print(_product.productName);
+
         Navigator.pop(context, true);
       }
     }

@@ -8,7 +8,6 @@ import 'package:bloc/bloc.dart';
 import 'package:hello/bloc/bloc_state/bloc_status.dart';
 import 'package:hello/bloc/inventory/inventory_state.dart';
 import 'package:hello/models/inventory.dart';
-import 'package:hello/models/product.dart';
 import 'package:hello/repos/inventory_repo.dart';
 part 'inventory_event.dart';
 
@@ -42,9 +41,9 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
 
     try {
       Inventory inventory = Inventory(
-          productId: event.product.productId,
-          productName: event.product.productName,
-          unit: event.product.unit);
+          productId: event.inventory.productId,
+          productName: event.inventory.productName,
+          unit: event.inventory.unit);
       bool isAdded =
           await _inventoryRepo.addToInventory(values: inventory.toJson());
       if (!isAdded) {
@@ -94,7 +93,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     try {
       List<Inventory> inventoryList = await getInventoryLists();
       int index = inventoryList.indexWhere(
-          (element) => element.productId == event.product.productId);
+          (element) => element.productId == event.inventory.productId);
       // if (index != -1) {
       //   inventoryList[index].onHand = inventoryList[index].onHand! + 1;
       // }
@@ -123,13 +122,13 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     try {
       final inventories = await getInventoryLists();
       int index = inventories.indexWhere(
-          (inventory) => inventory.productId == event.product.productId);
+          (inventory) => inventory.productId == event.inventory.productId);
       if (index == -1) {
         //add to Inventory
-        await _inventoryRepo.addToInventory(values: event.product.toJson());
+        await _inventoryRepo.addToInventory(values: event.inventory.toJson());
       } else {
         //update to Invenotry
-        await _inventoryRepo.updateCount(values: event.product.toJson());
+        await _inventoryRepo.updateCount(values: event.inventory.toJson());
       }
       final inventoriesLists = await getInventoryLists();
       print('added success');

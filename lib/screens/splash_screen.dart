@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hello/bloc/bloc_state/bloc_status.dart';
 import 'package:hello/bloc/inventory/inventory_bloc.dart';
 import 'package:hello/bloc/product/product_bloc.dart';
+import 'package:hello/models/inventory.dart';
 import 'package:hello/models/product.dart';
 import 'package:hello/utils/barcode_service.dart';
 import 'package:hello/utils/route_lists.dart';
@@ -151,8 +152,14 @@ class _SplashPageState extends State<SplashPage> {
       scannedProducts.add(product);
       // _inventoryBloc.add(InventoryUpdateCountEvent(product));
       print('-------------------inventory splash screen');
-      // _inventoryBloc.add(InventoryAddOrUpdateEvent(product));
-      _inventoryBloc.add(InventoryAddEvent(product));
+      Inventory inventory = Inventory(
+          productId: product.productId,
+          productName: product.productName,
+          unit: product.unit,
+          barcode: product.barcode,
+          onHand: 1);
+      _inventoryBloc.add(InventoryAddOrUpdateEvent(inventory));
+      // _inventoryBloc.add(InventoryAddEvent(product));
       print('--------|-----------inventory splash screen');
 
       List<dynamic> rowForCSV = [

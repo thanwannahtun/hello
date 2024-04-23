@@ -4,24 +4,24 @@ part of 'inventory_bloc.dart';
 sealed class InventoryEvent {}
 
 class InventoryAddEvent extends InventoryEvent {
-  final Product product;
+  final Inventory inventory;
 
-  InventoryAddEvent(this.product);
+  InventoryAddEvent(this.inventory);
 }
 
 class InventoryUpdateCountEvent extends InventoryEvent {
-  final Product product;
-  InventoryUpdateCountEvent(this.product);
+  final Inventory inventory;
+  InventoryUpdateCountEvent(this.inventory);
 }
 
 class InventoryFetchEvent extends InventoryEvent {}
 
 class InventoryRemoveEvent extends InventoryEvent {
-  final Product product;
-  InventoryRemoveEvent(this.product);
+  final Inventory inventory;
+  InventoryRemoveEvent(this.inventory);
 }
 
 class InventoryAddOrUpdateEvent extends InventoryEvent {
-  final Product product;
-  InventoryAddOrUpdateEvent(this.product);
+  final Inventory inventory;
+  InventoryAddOrUpdateEvent(this.inventory);
 }

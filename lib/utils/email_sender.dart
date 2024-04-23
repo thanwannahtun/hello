@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -28,6 +29,7 @@ class _EmailSenderState extends State<EmailSender> {
   );
 
   Future<void> send() async {
+    await _attachFileFromAppDocumentsDirectoy();
     final Email email = Email(
       body: _bodyController.text,
       subject: _subjectController.text,
@@ -47,6 +49,8 @@ class _EmailSenderState extends State<EmailSender> {
     }
 
     if (!mounted) return;
+
+    Navigator.pop(context);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -81,7 +85,7 @@ class _EmailSenderState extends State<EmailSender> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plugin example app'),
+        title: const Text('Email Sender '),
         actions: <Widget>[
           IconButton(
             onPressed: send,
@@ -162,10 +166,10 @@ class _EmailSenderState extends State<EmailSender> {
                         )
                       ],
                     ),
-                  TextButton(
-                    child: const Text('Attach file in app documents directory'),
-                    onPressed: () => _attachFileFromAppDocumentsDirectoy(),
-                  ),
+                  // TextButton(
+                  //   child: const Text('Attach file in app documents directory'),
+                  //   onPressed: () => _attachFileFromAppDocumentsDirectoy(),
+                  // ),
                 ],
               ),
             ),
