@@ -38,7 +38,6 @@ class _ProductListPageState extends State<ProductListPage> {
           print('state : ${state.status}');
           if (state.status == BlocStatus.fetched) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            productList = state.products;
           } else if (state.status == BlocStatus.fetchefailed) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             CustomWidgets.showSnackBar(context: context, title: state.error);
@@ -47,6 +46,7 @@ class _ProductListPageState extends State<ProductListPage> {
           }
         },
         builder: (context, state) {
+          print("State is ::::::::: ${state.status}");
           debugPrint(
               '============== state : ${state.status} products : ${state.products}');
 
@@ -89,10 +89,12 @@ class _ProductListPageState extends State<ProductListPage> {
       floatingActionButton: CustomFloatingActionButton(
         text: 'create product',
         onPressed: () {
-          Navigator.of(context).pushNamed(RouteLists.productPage).then((value) {
+          Navigator.of(context)
+              .pushNamed(RouteLists.productAddPage)
+              .then((value) {
             if (value == true) {
               // _productBloc.add(ProductFetchEvent());
-              // setState(() {});
+              setState(() {});
             }
           });
 
@@ -109,8 +111,14 @@ class _ProductListPageState extends State<ProductListPage> {
         fontSize: 20,
         fontWeight: FontWeight.bold);
     return InkWell(
-        onTap: () => Navigator.pushNamed(context, RouteLists.productPage,
-            arguments: {'product': product}),
+        onTap: () {
+          Navigator.pushNamed(context, RouteLists.productPage,
+              arguments: {'product': product}).then((value) {
+            if (value == true) {
+              setState(() {});
+            }
+          });
+        },
         // onTap: () => Navigator.of(context)
         //     .pushNamed(RouteLists.productPage, arguments: {'product': product}),
 
