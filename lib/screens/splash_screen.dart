@@ -60,29 +60,30 @@ class _SplashPageState extends State<SplashPage> {
       drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocConsumer<ProductBloc, ProductState>(
-          listener: (context, state) {
-            print('listener : ${state.products}');
+        child: BlocBuilder<ProductBloc, ProductState>(
+          // listener: (context, state) {
+          //   print('listener : ${state.products}');
 
-            switch (state.status) {
-              case BlocStatus.fetched:
-                products = state.products;
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                break;
-              case BlocStatus.fetching:
-                SnackBar snackBar =
-                    SnackBar(content: Text(state.message)); // scanning
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              case BlocStatus.fetchefailed:
-                SnackBar snackBar = SnackBar(content: Text(state.message));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              default:
-              // SnackBar snackBar = SnackBar(content: Text(state.message));
-              // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
-          },
+          //   switch (state.status) {
+          //     case BlocStatus.fetched:
+          //       products = state.products;
+          //       ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          //       break;
+          //     case BlocStatus.fetching:
+          //       SnackBar snackBar =
+          //           SnackBar(content: Text(state.message)); // scanning
+          //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          //     case BlocStatus.fetchefailed:
+          //       SnackBar snackBar = SnackBar(content: Text(state.message));
+          //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          //     default:
+          //     // SnackBar snackBar = SnackBar(content: Text(state.message));
+          //     // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          //   }
+          // },
           builder: (context, state) {
             print('builder : ${state.products.length}');
+            products = state.products;
 
             if (state.status == BlocStatus.fetching) {
               return const Center(
@@ -121,7 +122,6 @@ class _SplashPageState extends State<SplashPage> {
                   ],
                 ));
               }
-              products = state.products;
 
               return ScannedProducts(products: scannedProducts);
             }

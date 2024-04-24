@@ -91,7 +91,8 @@ class _ProductListPageState extends State<ProductListPage> {
         onPressed: () {
           Navigator.of(context).pushNamed(RouteLists.productPage).then((value) {
             if (value == true) {
-              _productBloc.add(ProductFetchEvent());
+              // _productBloc.add(ProductFetchEvent());
+              // setState(() {});
             }
           });
 
