@@ -121,6 +121,8 @@ class _SplashPageState extends State<SplashPage> {
                   ],
                 ));
               }
+              products = state.products;
+
               return ScannedProducts(products: scannedProducts);
             }
           },

@@ -37,7 +37,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     //   state.copyWith(status: BlocStatus.fetching, message: 'fetching...'),
     // );
     try {
-      List<Product> products = await _fetchAllProducts();
+      // List<Product> products = await _fetchAllProducts();
+      List<Map<String, dynamic>> productList =
+          await _productRepo.fetchProducts();
+      List<Product> products =
+          productList.map((e) => Product.fromJson(e)).toList();
 
       debugPrint('fetched products  (Bloc) => $products');
       emit(state.copyWith(status: BlocStatus.fetched, products: products));

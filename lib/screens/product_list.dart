@@ -63,7 +63,7 @@ class _ProductListPageState extends State<ProductListPage> {
           }
 
           // if (state.status == BlocStatus.fetched) {
-          // productList = state.products;
+          productList = state.products;
           if (state.products.isEmpty) {
             return Center(
               child: Icon(
