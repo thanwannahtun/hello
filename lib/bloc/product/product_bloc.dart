@@ -55,25 +55,28 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       ProductAddEvent event, Emitter<ProductState> emit) async {
     emit(state.copyWith(status: BlocStatus.adding, message: 'adding...'));
     try {
+      state.products.add(event.product);
+
       bool isAdded = await _productRepo.addProduct(event.product.toJson());
       if (!isAdded) {
         emit(state.copyWith(
             status: BlocStatus.addfailed,
             error:
                 'Failed to Adding ${event.product.productName} , isAdded = $isAdded'));
-      } else {
-        emit(state.copyWith(
-            status: BlocStatus.added,
-            message: 'successfully added ${event.product.productName}'));
       }
-      state.products.add(event.product);
+      emit(state.copyWith(
+          status: BlocStatus.added,
+          message: 'successfully added ${event.product.productName}'));
 
-      List<Product> products = await _fetchAllProducts();
-      // final productsList = await _productRepo.fetchProducts();
-      // final products = productsList.map((e) => Product.fromJson(e)).toList();
-      print(
-          '--------------------bloc ($products) ${products.last.productName}');
-      emit(state.copyWith(status: BlocStatus.fetched, products: products));
+      // state.products.add(event.product);
+      // // final products = List<Product>.from(state.products)..add(event.product);
+
+      // List<Product> products = await _fetchAllProducts();
+      // // final productsList = await _productRepo.fetchProducts();
+      // // final products = productsList.map((e) => Product.fromJson(e)).toList();
+      // // print(
+      // // '--------------------bloc ($products) ${products.last.productName}');
+      // emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
       emit(state.copyWith(
           status: BlocStatus.addfailed,

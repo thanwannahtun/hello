@@ -7,6 +7,7 @@ import 'package:hello/utils/route_lists.dart';
 import 'package:hello/utils/theme.dart';
 
 void main(List<String> args) {
+  //WidgetBinding.ensureInitialize();
   runApp(const MyApp());
 }
 

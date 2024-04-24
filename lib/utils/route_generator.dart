@@ -82,6 +82,9 @@ class RouteGenerator {
       case RouteLists.productListPage:
         return chooseRoute(
             builder: (context) => const ProductListPage(), settings: settings);
+      case RouteLists.productAddPage:
+        return chooseRoute(
+            builder: (context) => const ProductAddPage(), settings: settings);
 
       default:
         return chooseRoute(

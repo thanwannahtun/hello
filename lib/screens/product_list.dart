@@ -18,7 +18,7 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   late ProductBloc _productBloc;
 
-  // List<Product> productList = [];
+  List<Product> productList = [];
 
   @override
   void initState() {
@@ -29,67 +29,77 @@ class _ProductListPageState extends State<ProductListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Product Lists'),
-        ),
-        drawer: const CustomDrawer(),
-        body: Padding(
-          padding: const EdgeInsets.all(10),
-          child: BlocBuilder<ProductBloc, ProductState>(
-            builder: (context, state) {
-              debugPrint(
-                  '============== state : ${state.status} products : ${state.products}');
+      appBar: AppBar(
+        title: const Text('Product Lists'),
+      ),
+      drawer: const CustomDrawer(),
+      body: BlocConsumer<ProductBloc, ProductState>(
+        listener: (context, state) {
+          print('state : ${state.status}');
+          if (state.status == BlocStatus.fetched) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            productList = state.products;
+          } else if (state.status == BlocStatus.fetchefailed) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            CustomWidgets.showSnackBar(context: context, title: state.error);
+          } else if (state.status == BlocStatus.fetching) {
+            CustomWidgets.showSnackBar(context: context, title: state.message);
+          }
+        },
+        builder: (context, state) {
+          debugPrint(
+              '============== state : ${state.status} products : ${state.products}');
 
-              if (state.status == BlocStatus.fetchefailed) {
-                return Center(
-                  child: Text(' Erro : ${state.error.toString()}'),
-                );
-              }
-              if (state.status == BlocStatus.fetching) {
-                return const Center(child: CircularProgressIndicator());
-              }
+          if (state.status == BlocStatus.fetchefailed) {
+            return Center(
+              child: Text(' Erro : ${state.error.toString()}'),
+            );
+          } else if (state.status == BlocStatus.fetching) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.status == BlocStatus.initial) {
+            return const Center(
+              child: Text('No Data Found'),
+            );
+          }
 
-              if (state.status == BlocStatus.initial) {
-                return const Center(
-                  child: Text('No Data Found'),
-                );
-              }
-
-              // if (state.status == BlocStatus.fetched) {
-              // productList = state.products;
-              if (state.products.isEmpty) {
-                return Center(
-                  child: Icon(
-                    color: Theme.of(context)
-                        .floatingActionButtonTheme
-                        .backgroundColor,
-                    Icons.space_dashboard_rounded,
-                    size: 50,
-                  ),
-                );
-              }
-              // print('----------fetched state => ${state.status}');
-              return ListView.builder(
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  return showProducts(state.products[index]);
-                },
-              );
+          // if (state.status == BlocStatus.fetched) {
+          // productList = state.products;
+          if (state.products.isEmpty) {
+            return Center(
+              child: Icon(
+                color:
+                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
+                Icons.space_dashboard_rounded,
+                size: 50,
+              ),
+            );
+          }
+          // print('----------fetched state => ${state.status}');
+          return ListView.builder(
+            itemCount: productList.length,
+            itemBuilder: (context, index) {
+              return showProducts(productList[index]);
             },
-          ),
-        ),
-        floatingActionButton: CustomFloatingActionButton(
-            text: 'create product',
-            onPressed: () {
-              Navigator.pushNamed(context, RouteLists.productPage)
-                  .then((value) {
-                if (value == true && value != null) {
-                  _productBloc.add(ProductFetchEvent());
-                }
-              });
+          );
+          // } else {
+          //   return Container();
+          // }
+        },
+      ),
+      floatingActionButton: CustomFloatingActionButton(
+        text: 'create product',
+        onPressed: () {
+          Navigator.of(context).pushNamed(RouteLists.productPage).then((value) {
+            if (value == true) {
+              _productBloc.add(ProductFetchEvent());
+            }
+          });
 
-              // Navigator.of(context).pushNamed(RouteLists.productPage);
-            }));
+          // Navigator.pushNamed(context, RouteLists.productPage)
+          //     .then((value) => _productBloc.add(ProductFetchEvent()));
+        },
+      ),
+    );
   }
 
   Widget showProducts(Product product) {
