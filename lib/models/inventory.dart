@@ -16,7 +16,7 @@ class Inventory {
 
   factory Inventory.fromJson(Map<String, dynamic> json) => Inventory(
         inventoryId: json['inventory_id'] as int,
-        productId: json['product_id'] as int,
+        productId: json['product_id'],
         productName: json['product_name'] as String,
         unit: json['unit'],
         barcode: json['barcode'],

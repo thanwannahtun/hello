@@ -5,6 +5,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:hello/widgets/custom_drawer.dart';
 import 'package:path_provider/path_provider.dart';
 
 class EmailSender extends StatefulWidget {
@@ -93,6 +94,7 @@ class _EmailSenderState extends State<EmailSender> {
           )
         ],
       ),
+      drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

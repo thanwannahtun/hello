@@ -17,7 +17,7 @@ class ProductAddPage extends StatefulWidget {
 }
 
 class _ProductAddPageState extends State<ProductAddPage> {
-  bool isGeneraged = true;
+  bool isGenerated = true;
 
   late Product _product;
 
@@ -32,7 +32,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
   late ProductBloc _productBloc;
   String _scannedBarcode = '';
 
-  int _generatedbarcode = 999000000000;
+  int _generatedBarcode = 999000000000;
 
   late SharePreference prefs;
 
@@ -40,13 +40,13 @@ class _ProductAddPageState extends State<ProductAddPage> {
   @override
   void initState() {
     super.initState();
-    _productBloc = context.read<ProductBloc>()..add(ProductFetchEvent());
+    _productBloc = context.read<ProductBloc>();
     getGeneratedBarcode();
   }
 
   Future<void> getGeneratedBarcode() async {
     prefs = SharePreference.instance;
-    _generatedbarcode = await prefs.getInt('generated_barcode') ?? 999000000000;
+    _generatedBarcode = await prefs.getInt('generated_barcode') ?? 999000000000;
     setState(() {});
   }
 
@@ -62,22 +62,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: BlocListener<ProductBloc, ProductState>(
-          listener: (context, state) {
-            if (state.status == BlocStatus.adding) {
-              CustomWidgets.showSnackBar(
-                  context: context, title: state.message);
-            }
-            if (state.status == BlocStatus.addfailed) {
-              CustomWidgets.showSnackBar(
-                  context: context, title: state.message);
-            }
-            if (state.status == BlocStatus.added) {
-              CustomWidgets.showSnackBar(context: context, title: 'success');
-            }
-          },
-          child: form(context),
-        ),
+        child: form(context),
       ),
       floatingActionButton: CustomFloatingActionButton(
         text: 'Add',
@@ -171,7 +156,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
             width: 5,
           ),
           // if (_isEdit)
-          //   isGeneraged
+          //   isGenerated
           //       ? BarcodeService.instance.showGeneratedBarcode(data: _barcode)
           //       : Container(),
         ],
@@ -180,20 +165,22 @@ class _ProductAddPageState extends State<ProductAddPage> {
   }
 
   void _scanBarcode() async {
-    print('barcode = $_barcode');
+    debugPrint('barcode = $_barcode');
     String barcodeResult = await BarcodeService.instance.scanBarcode();
     _scannedBarcode = barcodeResult;
-    isGeneraged = false;
+    isGenerated = false;
     _barcodeController.text = _scannedBarcode;
     setState(() {});
   }
 
   _generateBarcode() async {
-    if (isGeneraged) {
-      _generatedbarcode++;
-      _barcode = _generatedbarcode.toString();
-      bool saved = await prefs.setInt('generated_barcode', _generatedbarcode);
-      _barcodeController.text = _generatedbarcode.toString();
+    if (isGenerated) {
+      _generatedBarcode++;
+      _barcode = _generatedBarcode.toString();
+      // bool saved = await prefs.setInt('generated_barcode', _generatedBarcode);
+      await prefs.setInt('generated_barcode', _generatedBarcode);
+
+      _barcodeController.text = _generatedBarcode.toString();
       setState(() {});
     } else {
       return;
@@ -213,7 +200,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
       );
 
       _productBloc.add(ProductAddEvent(_product));
-      Navigator.pop(context, true);
+      Navigator.pop(context);
     }
   }
 }

@@ -40,4 +40,9 @@ class Product {
     map['barcode'] = barcode;
     return map;
   }
+
+  @override
+  String toString() {
+    return "Product($productId,$productName,$unit,$barcode)";
+  }
 }

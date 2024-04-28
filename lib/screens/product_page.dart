@@ -46,7 +46,9 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
-    _productBloc = context.read<ProductBloc>()..add(ProductFetchEvent());
+    // _productBloc = context.read<ProductBloc>()..add(ProductFetchEvent());
+    _productBloc = context.read<ProductBloc>();
+
     getGeneratedBarcode();
   }
 
@@ -164,7 +166,7 @@ class _ProductPageState extends State<ProductPage> {
               style: Theme.of(context).elevatedButtonTheme.style,
               onPressed: _generateBarcode,
               child: const Text(
-                'generate',
+                'Generate',
                 style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
@@ -222,6 +224,7 @@ class _ProductPageState extends State<ProductPage> {
     String barcodeResult = await BarcodeService.instance.scanBarcode();
     // _barcode = barcodeResult;
     _scannedBarcode = barcodeResult;
+    _barcode = _scannedBarcode;
     print('barcode = $_barcode');
     isGeneraged = false;
     setState(() {});

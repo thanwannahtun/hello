@@ -12,153 +12,68 @@ part 'product_event.dart';
 part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
-  final ProductRepository _productRepo;
-
+  final ProductRepository _productRepository;
   ProductBloc()
-      : _productRepo = ProductRepository(),
-        super(const ProductState(
-            status: BlocStatus.initial, error: '', message: '', products: [])) {
-    on<ProductFetchEvent>(_fetchProduct);
+      : _productRepository = ProductRepository(),
+        super(const ProductState(products: [], status: BlocStatus.initial)) {
     on<ProductAddEvent>(_addProduct);
-    on<ProductUpdateEvent>(_updateProduct);
+    on<ProductFetchEvent>(_fetchProducts);
+    on<ProductUpdateEvent>(_updateProducts);
     on<ProductDeleteEvent>(_deleteProduct);
-  }
-
-  Future<List<Product>> _fetchAllProducts() async {
-    List<Map<String, dynamic>> productList = await _productRepo.fetchProducts();
-    List<Product> products =
-        productList.map((e) => Product.fromJson(e)).toList();
-    return products.isEmpty ? [] : products;
-  }
-
-  FutureOr<void> _fetchProduct(
-      ProductFetchEvent event, Emitter<ProductState> emit) async {
-    // emit(
-    //   state.copyWith(status: BlocStatus.fetching, message: 'fetching...'),
-    // );
-    try {
-      List<Product> products = await _fetchAllProducts();
-
-      debugPrint('fetched products  (Bloc) => $products');
-      emit(state.copyWith(status: BlocStatus.fetched, products: products));
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: BlocStatus.fetchefailed,
-          error: e.toString(),
-        ),
-      );
-    }
   }
 
   FutureOr<void> _addProduct(
       ProductAddEvent event, Emitter<ProductState> emit) async {
-    emit(state.copyWith(status: BlocStatus.adding, message: 'adding...'));
+    emit(state.copyWith(status: BlocStatus.adding));
     try {
-      state.products.add(event.product);
-
-      bool isAdded = await _productRepo.addProduct(event.product.toJson());
-      if (!isAdded) {
-        emit(state.copyWith(
-            status: BlocStatus.addfailed,
-            error:
-                'Failed to Adding ${event.product.productName} , isAdded = $isAdded'));
+      Product? product = await _productRepository
+          .addProductAndGetProduct(event.product.toJson());
+      if (product != null && product.productId != null) {
+        state.products.add(product);
+        emit(state.copyWith(status: BlocStatus.added));
       }
-      emit(state.copyWith(
-          status: BlocStatus.added,
-          message: 'successfully added ${event.product.productName}'));
-
-      // state.products.add(event.product);
-      // // final products = List<Product>.from(state.products)..add(event.product);
-
-      // List<Product> products = await _fetchAllProducts();
-      // // final productsList = await _productRepo.fetchProducts();
-      // // final products = productsList.map((e) => Product.fromJson(e)).toList();
-      // // print(
-      // // '--------------------bloc ($products) ${products.last.productName}');
-      // emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
-      emit(state.copyWith(
-          status: BlocStatus.addfailed,
-          message: 'Error Adding  ${event.product.productName} : error : $e'));
+      emit(state.copyWith(status: BlocStatus.addfailed, error: e.toString()));
     }
   }
 
-  // FutureOr<void> _addProduct(
-  //     ProductAddEvent event, Emitter<ProductState> emit) async {
-  //   emit(state.copyWith(status: BlocStatus.adding, message: 'adding...'));
+  FutureOr<void> _fetchProducts(
+      ProductFetchEvent event, Emitter<ProductState> emit) async {
+    emit(state.copyWith(status: BlocStatus.fetching));
+    try {
+      List<Product> products = [];
+      List<Map<String, dynamic>> map = await _productRepository.fetchProducts();
+      for (var product in map) {
+        products.add(Product.fromJson(product));
+      }
+      emit(state.copyWith(status: BlocStatus.fetched, products: products));
+    } catch (e) {
+      emit(
+          state.copyWith(status: BlocStatus.fetchefailed, error: e.toString()));
+    }
+  }
 
-  //   debugPrint('========== Add Product =========');
-
-  //   try {
-  //     bool isAdded = await _productRepo.addProduct(event.product.toJson());
-  //     if (!isAdded) {
-  //       print('fail!');
-  //       emit(state.copyWith(
-  //           // products: state.products,
-  //           status: BlocStatus.addfailed,
-  //           error: 'Failed adding products ( ${event.product.productName} )'));
-  //     }
-  //     final productCopy = List<Product>.from(state.products)
-  //       ..add(event.product);
-
-  //     emit(state.copyWith(
-  //         // products: temp,
-  //         products: productCopy,
-  //         status: BlocStatus.added,
-  //         message: 'Successfully added ( ${event.product.productName} )'));
-  //   } catch (e) {
-  //     debugPrint('Error Adding Products ( $e )');
-  //     emit(state.copyWith(
-  //         status: BlocStatus.addfailed,
-  //         error: 'Error adding products ( ${event.product.productName} )'));
-  //   }
-  // }
-
-  FutureOr<void> _updateProduct(
+  FutureOr<void> _updateProducts(
       ProductUpdateEvent event, Emitter<ProductState> emit) async {
-    emit(state.copyWith(status: BlocStatus.updating, message: 'updating...'));
+    emit(state.copyWith(status: BlocStatus.updating));
     try {
-      bool isUpdated = await _productRepo.updateProduct(product: event.product);
-      if (!isUpdated) {
-        emit(state.copyWith(
-            status: BlocStatus.updatefailed,
-            error:
-                'Failed to Updating ${event.product.productName} , isUpdated = $isUpdated'));
-      } else {
-        emit(state.copyWith(
-            status: BlocStatus.updated,
-            message: 'successfully updated ${event.product.productName}'));
-      }
-      List<Product> products = await _fetchAllProducts();
-      emit(state.copyWith(
-        status: BlocStatus.fetched,
-        products: products,
-      ));
+      await _productRepository.updateProduct(product: event.product);
+      Product product = state.products.elementAt(event.product.productId!);
+      product = event.product;
+      emit(state.copyWith(status: BlocStatus.added));
     } catch (e) {
-      emit(state.copyWith(
-          status: BlocStatus.updatefailed,
-          message:
-              'Error Updating  ${event.product.productName} : error : $e'));
+      emit(
+          state.copyWith(status: BlocStatus.updatefailed, error: e.toString()));
     }
   }
-
-  // FutureOr<void> _updateProduct(
-  //     ProductUpdateEvent event, Emitter<ProductState> emit) async {
-  //   try {
-  //     await _productRepo.updateProduct(product: event.product);
-  //   } catch (e) {
-  //     print(
-  //         'Error Updating Product ( ${event.product.productName} , error : $e )');
-  //   }
-  // }
 
   FutureOr<void> _deleteProduct(
       ProductDeleteEvent event, Emitter<ProductState> emit) async {
-    emit(state.copyWith(status: BlocStatus.deleting, message: 'deleting...'));
+    emit(state.copyWith(status: BlocStatus.deleting));
 
     try {
-      bool isDeleted = await _productRepo.deleteProduct(product: event.product);
+      bool isDeleted =
+          await _productRepository.deleteProduct(product: event.product);
 
       if (!isDeleted) {
         emit(state.copyWith(
@@ -166,17 +81,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             error:
                 'Failed to Deleting ${event.product.productName} , deleted = $isDeleted'));
       } else {
-        emit(state.copyWith(
-            status: BlocStatus.deleted,
-            message: 'successfully deleted ${event.product.productName}'));
+        state.products.removeAt(event.product.productId!);
+
+        emit(state.copyWith(status: BlocStatus.deleted));
       }
-      List<Product> products = await _fetchAllProducts();
-      emit(state.copyWith(status: BlocStatus.fetched, products: products));
     } catch (e) {
-      emit(state.copyWith(
-          status: BlocStatus.deletefailed,
-          message:
-              'Error Deleting  ${event.product.productName} : error : $e'));
+      emit(state.copyWith(status: BlocStatus.deletefailed));
     }
   }
 }

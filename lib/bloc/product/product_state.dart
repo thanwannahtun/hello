@@ -1,34 +1,20 @@
 part of 'product_bloc.dart';
 
-class ProductState extends Equatable {
-  final BlocStatus status;
-  final String error;
-  final String message;
-  final List<Product> products;
-
+final class ProductState extends Equatable {
   const ProductState(
-      {required this.status,
-      required this.error,
-      required this.message,
-      required this.products});
+      {required this.products, required this.status, this.error});
 
-  @override
-  List<Object> get props => [];
+  final List<Product> products;
+  final String? error;
+  final BlocStatus status;
   ProductState copyWith(
-      {BlocStatus? status,
-      String? error,
-      String? message,
-      List<Product>? products}) {
+      {List<Product>? products, String? error, BlocStatus? status}) {
     return ProductState(
-        status: status ?? this.status,
+        products: products ?? this.products,
         error: error ?? this.error,
-        message: message ?? this.message,
-        products: products ?? this.products);
+        status: status ?? this.status);
   }
 
   @override
-  String toString() {
-    print('------- state => ${status.name}');
-    return super.toString();
-  }
+  List<Object?> get props => [products, error, status];
 }

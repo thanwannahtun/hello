@@ -60,29 +60,29 @@ class _SplashPageState extends State<SplashPage> {
       drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<ProductBloc, ProductState>(
-          // listener: (context, state) {
-          //   print('listener : ${state.products}');
+        child: BlocConsumer<ProductBloc, ProductState>(
+          listener: (context, state) {
+            print('listener : ${state.products}');
 
-          //   switch (state.status) {
-          //     case BlocStatus.fetched:
-          //       products = state.products;
-          //       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          //       break;
-          //     case BlocStatus.fetching:
-          //       SnackBar snackBar =
-          //           SnackBar(content: Text(state.message)); // scanning
-          //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          //     case BlocStatus.fetchefailed:
-          //       SnackBar snackBar = SnackBar(content: Text(state.message));
-          //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          //     default:
-          //     // SnackBar snackBar = SnackBar(content: Text(state.message));
-          //     // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          //   }
-          // },
+            switch (state.status) {
+              case BlocStatus.fetched:
+                products = state.products;
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                break;
+              case BlocStatus.fetching:
+                SnackBar snackBar =
+                    const SnackBar(content: Text('Fetching')); // scanning
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              case BlocStatus.fetchefailed:
+                SnackBar snackBar = const SnackBar(content: Text('Failed'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              default:
+              // SnackBar snackBar = SnackBar(content: Text(state.message));
+              // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          },
           builder: (context, state) {
-            print('builder : ${state.products.length}');
+            debugPrint('builder : ${state.products.length}');
             products = state.products;
 
             if (state.status == BlocStatus.fetching) {
@@ -90,7 +90,7 @@ class _SplashPageState extends State<SplashPage> {
                 child: CircularProgressIndicator(),
               );
             } else if (state.status == BlocStatus.fetchefailed) {
-              return Text(state.error);
+              return const Text('Fetched failed');
             } else {
               if (scannedProducts.isEmpty) {
                 return Center(
@@ -143,6 +143,7 @@ class _SplashPageState extends State<SplashPage> {
       // ignore: use_build_context_synchronously
       CustomWidgets.showSnackBar(context: context, title: "Failed to Scan");
     }
+    print("product json ${products.map((e) => e.toJson())}");
     // barcodeResult = result;
     int index = products.indexWhere((element) => element.barcode == result);
 
@@ -151,6 +152,7 @@ class _SplashPageState extends State<SplashPage> {
       debugPrint(' No Barcode Found ! ( index : $index ) ');
     } else {
       Product product = products[index];
+      print('++++++++++++++++++++ ${product.productId} +++++++++++++++++++');
       scannedProducts.add(product);
       // _inventoryBloc.add(InventoryUpdateCountEvent(product));
       print('-------------------inventory splash screen');
@@ -160,6 +162,7 @@ class _SplashPageState extends State<SplashPage> {
           unit: product.unit,
           barcode: product.barcode,
           onHand: 1);
+      print(' inventory to Add :::::: ${inventory.toJson()}');
       _inventoryBloc.add(InventoryAddOrUpdateEvent(inventory));
       // _inventoryBloc.add(InventoryAddEvent(product));
       print('--------|-----------inventory splash screen');

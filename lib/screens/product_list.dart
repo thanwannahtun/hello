@@ -18,8 +18,6 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   late ProductBloc _productBloc;
 
-  List<Product> productList = [];
-
   @override
   void initState() {
     super.initState();
@@ -33,73 +31,23 @@ class _ProductListPageState extends State<ProductListPage> {
         title: const Text('Product Lists'),
       ),
       drawer: const CustomDrawer(),
-      body: BlocConsumer<ProductBloc, ProductState>(
-        listener: (context, state) {
-          print('state : ${state.status}');
-          if (state.status == BlocStatus.fetched) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          } else if (state.status == BlocStatus.fetchefailed) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            CustomWidgets.showSnackBar(context: context, title: state.error);
-          } else if (state.status == BlocStatus.fetching) {
-            CustomWidgets.showSnackBar(context: context, title: state.message);
-          }
-        },
+      body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
-          print("State is ::::::::: ${state.status}");
-          debugPrint(
-              '============== state : ${state.status} products : ${state.products}');
+          print(
+              "State is ::::::::: ${state.status} | products::::::::::: ${state.products.toString()}");
 
-          if (state.status == BlocStatus.fetchefailed) {
-            return Center(
-              child: Text(' Erro : ${state.error.toString()}'),
-            );
-          } else if (state.status == BlocStatus.fetching) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state.status == BlocStatus.initial) {
-            return const Center(
-              child: Text('No Data Found'),
-            );
-          }
-
-          // if (state.status == BlocStatus.fetched) {
-          productList = state.products;
-          if (state.products.isEmpty) {
-            return Center(
-              child: Icon(
-                color:
-                    Theme.of(context).floatingActionButtonTheme.backgroundColor,
-                Icons.space_dashboard_rounded,
-                size: 50,
-              ),
-            );
-          }
-          // print('----------fetched state => ${state.status}');
           return ListView.builder(
-            itemCount: productList.length,
+            itemCount: state.products.length,
             itemBuilder: (context, index) {
-              return showProducts(productList[index]);
+              return showProducts(state.products[index]);
             },
           );
-          // } else {
-          //   return Container();
-          // }
         },
       ),
       floatingActionButton: CustomFloatingActionButton(
         text: 'create product',
         onPressed: () {
-          Navigator.of(context)
-              .pushNamed(RouteLists.productAddPage)
-              .then((value) {
-            if (value == true) {
-              // _productBloc.add(ProductFetchEvent());
-              setState(() {});
-            }
-          });
-
-          // Navigator.pushNamed(context, RouteLists.productPage)
-          //     .then((value) => _productBloc.add(ProductFetchEvent()));
+          Navigator.of(context).pushNamed(RouteLists.productAddPage);
         },
       ),
     );
@@ -111,32 +59,26 @@ class _ProductListPageState extends State<ProductListPage> {
         fontSize: 20,
         fontWeight: FontWeight.bold);
     return InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, RouteLists.productPage,
-              arguments: {'product': product}).then((value) {
-            if (value == true) {
-              setState(() {});
-            }
-          });
-        },
-        // onTap: () => Navigator.of(context)
-        //     .pushNamed(RouteLists.productPage, arguments: {'product': product}),
-
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('product :  ${product.productName ?? 'product Name'}',
-                    style: textStyle),
-                Text('unit        :  ${product.unit ?? 'unit'}',
-                    style: textStyle),
-                Text('barcode :  ${product.barcode}', style: textStyle),
-              ],
-            ),
+      onTap: () {
+        Navigator.pushNamed(context, RouteLists.productPage,
+            arguments: {'product': product});
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('product :  ${product.productName ?? 'product Name'}',
+                  style: textStyle),
+              Text('unit        :  ${product.unit ?? 'unit'}',
+                  style: textStyle),
+              Text('barcode :  ${product.barcode}', style: textStyle),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -23,7 +23,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
             message: '')) {
     on<InventoryAddEvent>(_addToInventory);
     on<InventoryFetchEvent>(_getAllInventoryLists);
-    on<InventoryUpdateCountEvent>(_inventoryUpdateCount);
+    // on<InventoryUpdateCountEvent>(_inventoryUpdateCount);
     on<InventoryAddOrUpdateEvent>(_inventoryAddOrUpdate);
   }
 
@@ -64,8 +64,9 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
   Future<List<Inventory>> getInventoryLists() async {
     List<Map<String, dynamic>> inventoryMap =
         await _inventoryRepo.getInventoryLists();
-    debugPrint('Fetched inventoryMap =: $inventoryMap');
 
+    print(
+        'fetched inventory Map  (${inventoryMap.map((e) => Inventory.fromJson(e))})');
     List<Inventory> inventoryList =
         inventoryMap.map((e) => Inventory.fromJson(e)).toList();
     return inventoryList.isEmpty ? [] : inventoryList;
@@ -73,11 +74,11 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
 
   FutureOr<void> _getAllInventoryLists(
       InventoryFetchEvent event, Emitter<InventoryState> emit) async {
-    // emit(state.copyWith(status: BlocStatus.fetching, message: 'fetching...'));
+    emit(state.copyWith(status: BlocStatus.fetching, message: 'fetching...'));
     try {
       List<Inventory> inventoryList = await getInventoryLists();
-      print('===============================');
-      print(inventoryList);
+      print('==============fetching inventory List from DB=================');
+      print(inventoryList.map((e) => e.toJson()));
       emit(state.copyWith(
           status: BlocStatus.fetched, inventoryLists: inventoryList));
     } catch (e) {
@@ -88,6 +89,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     }
   }
 
+/*
   FutureOr<void> _inventoryUpdateCount(
       InventoryUpdateCountEvent event, Emitter<InventoryState> emit) async {
     try {
@@ -116,7 +118,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           error: 'Error Updating To Inventory $e'));
     }
   }
-
+*/
   FutureOr<void> _inventoryAddOrUpdate(
       InventoryAddOrUpdateEvent event, Emitter<InventoryState> emit) async {
     try {
@@ -124,14 +126,24 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       int index = inventories.indexWhere(
           (inventory) => inventory.productId == event.inventory.productId);
       if (index == -1) {
+        print(
+            'addding ::::::::::::::::: to inventory list ${event.inventory.toJson()}');
         //add to Inventory
         await _inventoryRepo.addToInventory(values: event.inventory.toJson());
       } else {
+        print(
+            'updating onHand ::::::::::::::::: to inventory list ${event.inventory.toJson()}');
         //update to Invenotry
         await _inventoryRepo.updateCount(values: event.inventory.toJson());
       }
-      final inventoriesLists = await getInventoryLists();
-      print('added success');
+      // List<Inventory> inventoriesLists = await getInventoryLists();// error here
+      List<Map<String, dynamic>> inventoryMap =
+          await _inventoryRepo.getInventoryLists();
+      List<Inventory> inventoriesLists =
+          inventoryMap.map((e) => Inventory.fromJson(e)).toList();
+
+      print(
+          '(success) inventoresLists ::::::::::::::::: from database ${inventoriesLists.map((e) => e.toJson())}');
       emit(state.copyWith(
           status: BlocStatus.fetched, inventoryLists: inventoriesLists));
     } catch (e) {
