@@ -29,7 +29,10 @@ class CustomFloatingActionButton extends StatelessWidget {
           const SizedBox(
             width: 5.0,
           ),
-          Text(text),
+          Text(text,
+              style: const TextStyle(
+                color: Colors.white,
+              )),
         ],
       ),
     );

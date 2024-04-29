@@ -7,4 +7,9 @@ class ConstantCulumn {
   static const String productName = 'product_name';
   static const String unit = 'unit';
   static const String onHand = 'on_hand';
+
+  static const String categoryId = 'category_id';
+  static const String categoryName = 'category_name';
+  static const String parentId = 'parent_id';
+  static const String parentName = 'parent_name';
 }

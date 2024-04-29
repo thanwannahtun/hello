@@ -72,21 +72,20 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit(state.copyWith(status: BlocStatus.deleting));
 
     try {
-      bool isDeleted =
-          await _productRepository.deleteProduct(product: event.product);
-
+      bool isDeleted = await _productRepository.deleteProduct(id: event.id);
+      print(
+          '::::::::::::::::::::::::::::::::::::::::::::::::::::::::: deleted $isDeleted ');
       if (!isDeleted) {
         emit(state.copyWith(
-            status: BlocStatus.deletefailed,
-            error:
-                'Failed to Deleting ${event.product.productName} , deleted = $isDeleted'));
+            status: BlocStatus.deletefailed, error: 'Failed to Deleting'));
       } else {
-        state.products.removeAt(event.product.productId!);
+        state.products.removeAt(event.id);
 
         emit(state.copyWith(status: BlocStatus.deleted));
       }
     } catch (e) {
-      emit(state.copyWith(status: BlocStatus.deletefailed));
+      emit(
+          state.copyWith(status: BlocStatus.deletefailed, error: e.toString()));
     }
   }
 }

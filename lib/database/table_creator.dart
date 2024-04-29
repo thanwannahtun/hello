@@ -17,6 +17,12 @@ class TableCreator {
       ${ConstantCulumn.unit} TEXT,
       ${ConstantCulumn.barcode} TEXT,
       ${ConstantCulumn.onHand} REAL
+    )''',
+    '''CREATE TABLE IF NOT EXISTS ${ConstantTables.categoryTable} (
+      ${ConstantCulumn.categoryId} INTEGER PRIMARY KEY,
+      ${ConstantCulumn.categoryName} TEXT NOT NULL,
+      ${ConstantCulumn.parentId} INTEGER,
+      ${ConstantCulumn.parentName} TEXT
     )'''
   ];
 

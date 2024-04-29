@@ -49,9 +49,9 @@ class ProductRepository {
     return v > 0;
   }
 
-  Future<bool> deleteProduct({required Product product}) async {
+  Future<bool> deleteProduct({required int id}) async {
     int value = await _crudTable.deleteData(ConstantTables.productTable,
-        where: ' product_id = ?', whereArgs: [product.productId]);
+        where: ' product_id = ?', whereArgs: [id]);
     return value > 0;
   }
 }
