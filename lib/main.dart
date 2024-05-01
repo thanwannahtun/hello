@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hello/bloc/inventory/inventory_bloc.dart';
-import 'package:hello/bloc/product/product_bloc.dart';
-import 'package:hello/utils/route_generator.dart';
-import 'package:hello/utils/route_lists.dart';
-import 'package:hello/utils/theme.dart';
+import 'package:hello/presentation/inventory/bloc/inventory_bloc.dart';
+import 'package:hello/presentation/product/bloc/product_bloc.dart';
+import 'package:hello/config/route/route_generator.dart';
+import 'package:hello/config/route/route_lists.dart';
+import 'package:hello/config/theme/theme.dart';
 
 void main(List<String> args) {
   //WidgetBinding.ensureInitialize();

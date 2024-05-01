@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello/utils/constant_strings.dart';
-import 'package:hello/utils/route_lists.dart';
+import 'package:hello/config/route/route_lists.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});

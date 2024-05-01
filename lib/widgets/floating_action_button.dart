@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hello/utils/theme.dart';
+import 'package:hello/config/theme/theme.dart';
 
 class CustomFloatingActionButton extends StatelessWidget {
   CustomFloatingActionButton(
