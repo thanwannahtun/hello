@@ -12,4 +12,7 @@ class ConstantCulumn {
   static const String categoryName = 'category_name';
   static const String parentId = 'parent_id';
   static const String parentName = 'parent_name';
+
+  static const String id = 'id';
+  static const String productLines = 'product_lines';
 }

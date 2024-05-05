@@ -23,6 +23,9 @@ class TableCreator {
       ${ConstantCulumn.categoryName} TEXT NOT NULL,
       ${ConstantCulumn.parentId} INTEGER,
       ${ConstantCulumn.parentName} TEXT
+    )''',
+    '''CREATE TABLE IF NOT EXISTS ${ConstantTables.shoppingCardTable} (
+      ${ConstantCulumn.id} INTEGER PRIMARY KEY,
     )'''
   ];
 
