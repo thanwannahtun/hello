@@ -1,39 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:hello/presentation/sale_order/model/sale_order_line.dart';
 
 class SaleOrder {
   SaleOrder(
-      {required this.saleOrderLines,
-      this.id,
-      this.customerId,
+      {this.id,
+      this.soNo,
+      this.orderType,
+      this.orderDate,
+      this.deliveryStatus,
+      this.saleOrderLines,
+      this.cutomerId,
       this.customerName,
-      this.expirationDate,
-      this.paymentTerm,
-      this.currency});
-  final int? id;
-  final int? customerId;
-  final String? customerName;
-  final String? expirationDate;
-  final String? paymentTerm;
-  final String? currency;
-  final List<SaleOrderLine> saleOrderLines;
+      this.phone,
+      this.ward,
+      this.township,
+      this.salePerson});
 
-  SaleOrder copyWith(
-      {int? id,
-      int? customerId,
-      String? customerName,
-      String? expirationDate,
-      String? paymentTerm,
-      String? currency,
-      List<SaleOrderLine>? saleOrderLines}) {
-    return SaleOrder(
-        id: id ?? this.id,
-        customerId: customerId ?? this.customerId,
-        customerName: customerName ?? this.customerName,
-        expirationDate: expirationDate ?? this.expirationDate,
-        paymentTerm: paymentTerm ?? this.paymentTerm,
-        currency: currency ?? this.currency,
-        saleOrderLines: saleOrderLines ?? this.saleOrderLines);
-  }
+  final int? id;
+  final String? soNo;
+  final String? orderType;
+  final String? orderDate;
+  final String? deliveryStatus;
+  final List<SaleOrderLine>? saleOrderLines;
+  final int? cutomerId;
+  final String? customerName;
+  final String? phone;
+  final String? ward;
+  final String? township;
+  final String? salePerson;
 
   factory SaleOrder.fromJson(Map<String, dynamic> json) {
     List<SaleOrderLine> saleOrderLines = [];
@@ -41,26 +36,67 @@ class SaleOrder {
       saleOrderLines.add(SaleOrderLine.fromJson(line));
     }
     return SaleOrder(
-        id: json['id'],
-        customerId: json['customerId'],
-        customerName: json['customerName'],
-        expirationDate: json['expirationData'],
-        paymentTerm: json['paymentTerm'],
-        currency: json['currency'],
-        saleOrderLines: saleOrderLines
-        // saleOrderLines: (json['saleOrderLines'] as List).map(orderLine => SaleOrderLine.fromJson(orderLine)).toList(),
-        );
+      id: json['id'],
+      soNo: json['soNo'],
+      orderType: json['orderType'],
+      orderDate: json['orderDate'],
+      deliveryStatus: json['deliveryStatus'],
+      salePerson: json['salePerson'],
+      township: json['township'],
+      ward: json['ward'],
+      phone: json['phone'],
+      customerName: json['customerName'],
+      cutomerId: json['cutomerId'],
+      saleOrderLines: saleOrderLines,
+
+      // saleOrderLines: (json['saleOrderLines'] as List).map(orderLine => SaleOrderLine.fromJson(orderLine)).toList,
+    );
   }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = <String, dynamic>{};
     map['id'] = id;
-    map['customer_id'] = customerId;
-    map['customer_name'] = customerName;
-    map['expiration_date'] = expirationDate;
-    map['payment_term'] = paymentTerm;
-    map['currency'] = currency;
-    map['sale_order_lines'] = saleOrderLines;
+    map['soNo'] = soNo;
+    map['orderType'] = orderType;
+    map['orderDate'] = orderDate;
+    map['deliveryStatus'] = deliveryStatus;
+    map['salePerson'] = salePerson;
+    map['township'] = township;
+    map['ward'] = ward;
+    map['phone'] = phone;
+    map['customerName'] = customerName;
+    map['cutomerId'] = cutomerId;
+    map['saleOrderLines'] = saleOrderLines != null
+        ? saleOrderLines?.map((e) => e.toJson()).toList()
+        : [];
     return map;
+  }
+
+  SaleOrder copyWith(
+      {int? id,
+      String? soNo,
+      String? orderType,
+      String? orderDate,
+      String? deliveryStatus,
+      List<SaleOrderLine>? saleOrderLines,
+      int? cutomerId,
+      String? customerName,
+      String? phone,
+      String? ward,
+      String? township,
+      String? salePerson}) {
+    return SaleOrder(
+        id: id ?? this.id,
+        soNo: soNo ?? this.soNo,
+        orderType: orderType ?? this.orderType,
+        orderDate: orderDate ?? this.orderDate,
+        deliveryStatus: deliveryStatus ?? this.deliveryStatus,
+        saleOrderLines: saleOrderLines ?? saleOrderLines,
+        cutomerId: cutomerId ?? cutomerId,
+        customerName: customerName ?? customerName,
+        phone: phone ?? phone,
+        ward: ward ?? ward,
+        township: township ?? township,
+        salePerson: salePerson ?? salePerson);
   }
 }
