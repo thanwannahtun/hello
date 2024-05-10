@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hello/presentation/department/bloc/department_bloc.dart';
+import 'package:hello/presentation/department/screens/department_create_page.dart';
+import 'package:hello/presentation/department/screens/department_detail_page.dart';
+import 'package:hello/presentation/department/screens/department_list_page.dart';
 import 'package:hello/presentation/inventory/bloc/inventory_bloc.dart';
 import 'package:hello/presentation/product/bloc/product_bloc.dart';
 import 'package:hello/presentation/inventory/screens/inventory_page.dart';
@@ -86,6 +90,36 @@ class RouteGenerator {
         return chooseRoute(
             builder: (context) => const ProductAddPage(), settings: settings);
 
+      /// [Department] section
+      case RouteLists.departmentListPage:
+        return chooseRoute(
+            builder: (context) {
+              return BlocProvider<DepartmentBloc>(
+                create: (context) => DepartmentBloc(),
+                child: const DepartmentListPage(),
+              );
+            },
+            settings: settings);
+      case RouteLists.departmentCreatePage:
+        return chooseRoute(
+            builder: (context) {
+              return BlocProvider<DepartmentBloc>(
+                create: (context) => DepartmentBloc(),
+                child: const NewDepartmentPage(),
+              );
+            },
+            settings: settings);
+      case RouteLists.departmentDetailPage:
+        return chooseRoute(
+            builder: (context) {
+              return BlocProvider<DepartmentBloc>(
+                create: (context) => DepartmentBloc(),
+                child: const DepartmentDetailPage(),
+              );
+            },
+            settings: settings);
+
+      /// [default] section
       default:
         return chooseRoute(
             builder: (context) => const NoRouteScreen(), settings: settings);
