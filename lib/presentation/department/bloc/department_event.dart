@@ -13,3 +13,8 @@ final class CreateDepartmentEvent extends DepartmentEvent {
   final Department department;
   const CreateDepartmentEvent({required this.department});
 }
+
+final class UpdateDepartmentEvent extends DepartmentEvent {
+  final Department department;
+  const UpdateDepartmentEvent({required this.department});
+}

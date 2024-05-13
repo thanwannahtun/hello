@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hello/data/database/constant_tables.dart';
 import 'package:hello/data/database/crud_table.dart';
 import 'package:hello/presentation/department/model/Department.dart';
@@ -31,5 +32,19 @@ class DepartmentRepo {
       }
     }
     return null;
+  }
+
+  Future<bool> updateDepartment({required Department department}) async {
+    try {
+      int value = await _crudTable.updateData(
+          table: _departmentTable,
+          values: department.toJson(),
+          where: 'id = ?',
+          whereArgs: [department.id]);
+      return value > 0;
+    } catch (e) {
+      debugPrint('ERROR [ $e ] ');
+      return false;
+    }
   }
 }

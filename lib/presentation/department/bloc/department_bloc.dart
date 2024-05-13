@@ -19,6 +19,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
             status: BlocStatus.initial, departments: [])) {
     on<FetchAllDepartmentEvent>(_fetchAllDepartments);
     on<CreateDepartmentEvent>(_createDepartments);
+    on<UpdateDepartmentEvent>(_updateDepartments);
   }
 
   FutureOr<void> _fetchAllDepartments(
@@ -52,6 +53,23 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
       debugPrint('Error -> [ $e ] ');
 
       emit(state.copyWith(status: BlocStatus.addfailed, error: e.toString()));
+    }
+  }
+
+  FutureOr<void> _updateDepartments(
+      UpdateDepartmentEvent event, Emitter<DepartmentState> emit) async {
+    emit(state.copyWith(status: BlocStatus.updating));
+    try {
+      await _departmentRepo.updateDepartment(department: event.department);
+      state.departments[state.departments
+              .indexWhere((element) => element.id == event.department.id)] =
+          event.department;
+
+      emit(state.copyWith(status: BlocStatus.updated));
+    } catch (e) {
+      debugPrint('Error -> [ $e ] ');
+      emit(
+          state.copyWith(status: BlocStatus.updatefailed, error: e.toString()));
     }
   }
 }

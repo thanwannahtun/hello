@@ -101,11 +101,13 @@ class _DepartmentDetailPageState extends State<DepartmentDetailPage> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  final department = Department(
-                      name: _nameController.text,
-                      parentName: _parentController.text);
-                  _departmentBloc
-                      .add(CreateDepartmentEvent(department: department));
+
+                  _departmentBloc.add(UpdateDepartmentEvent(
+                      department: _department.copyWith(
+                          name: _nameController.text,
+                          parentName: _parentController.text)));
+                  print(
+                      'name : ${_nameController.text} | parent : ${_parentController.text}');
                   Navigator.pop(context);
                 }
               },

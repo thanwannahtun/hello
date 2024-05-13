@@ -10,10 +10,10 @@ class Department extends Equatable {
   Department copyWith(
       {int? id, String? name, int? parentId, String? parentName}) {
     return Department(
-        id: id ?? id,
-        name: name ?? name,
-        parentId: parentId ?? parentId,
-        parentName: parentName ?? parentName);
+        id: id ?? this.id,
+        name: name ?? this.name,
+        parentId: parentId ?? this.parentId,
+        parentName: parentName ?? this.parentName);
   }
 
   factory Department.fromJson(Map<String, dynamic> json) {
