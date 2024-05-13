@@ -28,7 +28,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       Product? product = await _productRepository
           .addProductAndGetProduct(event.product.toJson());
-      if (product != null && product.productId != null) {
+      if (product != null && product.id != null) {
         state.products.add(product);
         emit(state.copyWith(status: BlocStatus.added));
       }
@@ -58,7 +58,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit(state.copyWith(status: BlocStatus.updating));
     try {
       await _productRepository.updateProduct(product: event.product);
-      Product product = state.products.elementAt(event.product.productId!);
+      Product product = state.products.elementAt(event.product.id!);
       product = event.product;
       emit(state.copyWith(status: BlocStatus.added));
     } catch (e) {

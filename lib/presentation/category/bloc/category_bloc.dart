@@ -47,13 +47,13 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     try {
       Category? category = await _categoryRepo.addCategoryAndReturnCategory(
           values: event.category.toJson());
-      if (category != null && category.categoryId != null) {
+      if (category != null && category.id != null) {
         state.categories.add(category);
         emit(state.copyWith(status: BlocStatus.added));
       } else {
         emit(state.copyWith(
             status: BlocStatus.addfailed,
-            error: 'Failed adding category ${event.category.categoryName}'));
+            error: 'Failed adding category ${event.category.name}'));
       }
     } catch (e) {
       debugPrint('Error At _addCategory $e');
@@ -68,14 +68,13 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       bool updated =
           await _categoryRepo.updateCategory(values: event.category.toJson());
       if (updated) {
-        Category category =
-            state.categories.elementAt(event.category.categoryId!);
+        Category category = state.categories.elementAt(event.category.id!);
         category = event.category;
         emit(state.copyWith(status: BlocStatus.updated));
       } else {
         emit(state.copyWith(
             status: BlocStatus.updatefailed,
-            error: 'Failed Updating Category ${event.category.categoryName}'));
+            error: 'Failed Updating Category ${event.category.name}'));
       }
     } catch (e) {
       debugPrint('Error At _editCategory $e');

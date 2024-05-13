@@ -17,10 +17,8 @@ class CategoryRepo {
       {required Map<String, dynamic> values}) async {
     int value = await _crudTable.insertData(categoryTable, values);
     if (value > 0) {
-      List<Map<String, dynamic>> categories = await _crudTable.readData(
-          categoryTable,
-          where: 'category_id = ?',
-          whereArgs: [value]);
+      List<Map<String, dynamic>> categories = await _crudTable
+          .readData(categoryTable, where: 'id = ?', whereArgs: [value]);
 
       if (categories.isNotEmpty) {
         return categories.map((e) => Category.fromJson(e)).toList().first;
@@ -35,15 +33,15 @@ class CategoryRepo {
     int value = await _crudTable.updateData(
         table: categoryTable,
         values: values,
-        where: 'category_id = ?',
-        whereArgs: [values['category_id']]);
+        where: ' id = ?',
+        whereArgs: [values['id']]);
 
     return value > 0;
   }
 
   Future<bool> deleteCategory({required int categoryId}) async {
-    int value = await _crudTable.deleteData(categoryTable,
-        where: 'category_id = ? ', whereArgs: [categoryId]);
+    int value = await _crudTable
+        .deleteData(categoryTable, where: ' id = ? ', whereArgs: [categoryId]);
 
     return value > 0;
   }

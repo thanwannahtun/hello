@@ -11,8 +11,6 @@ class ProductRepository {
   }
 
   Future<bool> addProduct(Map<String, dynamic> values) async {
-    debugPrint(
-        '====  ========== productName ${values['product_name']} === =========  ===');
     try {
       int value =
           await _crudTable.insertData(ConstantTables.productTable, values);
@@ -29,7 +27,7 @@ class ProductRepository {
     if (value > 0) {
       List<Map<String, dynamic>> products = await _crudTable.readData(
           ConstantTables.productTable,
-          where: 'product_id = ?',
+          where: ' id = ?',
           whereArgs: [value]);
       if (products.isNotEmpty) {
         return products.map((e) => Product.fromJson(e)).toList().first;
@@ -44,14 +42,14 @@ class ProductRepository {
     int v = await _crudTable.updateData(
         table: ConstantTables.productTable,
         values: product.toJson(),
-        where: 'product_id = ?',
-        whereArgs: [product.productId]);
+        where: ' id = ?',
+        whereArgs: [product.id]);
     return v > 0;
   }
 
   Future<bool> deleteProduct({required int id}) async {
     int value = await _crudTable.deleteData(ConstantTables.productTable,
-        where: ' product_id = ?', whereArgs: [id]);
+        where: '  id = ?', whereArgs: [id]);
     return value > 0;
   }
 }

@@ -1,14 +1,26 @@
 class ProductLine {
-  ProductLine({this.id, this.productId, this.quantity, this.productName});
+  ProductLine(
+      {required this.shoppingCardId,
+      this.id,
+      this.productId,
+      this.quantity,
+      this.productName});
+
   final int? id;
+  final int shoppingCardId;
   final int? productId;
   final int? quantity;
   final String? productName;
 
   ProductLine copyWith(
-      {int? id, int? productId, int? quantity, String? productName}) {
+      {int? id,
+      int? shoppingCardId,
+      int? productId,
+      int? quantity,
+      String? productName}) {
     return ProductLine(
         id: id ?? this.id,
+        shoppingCardId: shoppingCardId ?? this.shoppingCardId,
         productId: productId ?? this.productId,
         productName: productName ?? this.productName,
         quantity: quantity ?? this.quantity);
@@ -16,17 +28,35 @@ class ProductLine {
 
   factory ProductLine.fromJson(Map<String, dynamic> json) => ProductLine(
         id: json['id'] as int,
-        productId: json['product_id'],
-        productName: json['product_name'],
+        shoppingCardId: json['shoppingCardId'] as int,
+        productId: json['productId'],
+        productName: json['productName'],
         quantity: json['quantity'],
       );
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = <String, dynamic>{};
     map['id'] = id;
-    map['product_name'] = productName;
-    map['product_id'] = productId;
+    map['shoppingCardId'] = shoppingCardId;
+    map['productName'] = productName;
+    map['productId'] = productId;
     map['quantity'] = quantity;
     return map;
   }
 }
+
+/*
+  try {
+      var results =
+          await conn.query('SELECT * FROM shopping_cards WHERE id = ?', [cardId]);
+      if (results.isNotEmpty) {
+        var card = results.first;
+        var productLines = await ProductLine.getProductLinesByCardId(cardId);
+        // check extra ... here 
+        return ShoppingCard(
+          id: card['id'],
+          productLines: productLines,
+        );
+      }
+    }
+*/

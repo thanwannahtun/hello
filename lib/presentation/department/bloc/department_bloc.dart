@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:hello/core/bloc/bloc_function.dart';
 import 'package:hello/presentation/bloc/bloc_status.dart';
 import 'package:hello/presentation/department/model/Department.dart';
@@ -24,6 +25,7 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
       FetchAllDepartmentEvent event, Emitter<DepartmentState> emit) async {
     await BlocFunction.fetchAllData(emit, state, () async {
       final departments = await _departmentRepo.getAllDepartments();
+      debugPrint('fetched departments = ${departments.map((e) => e.toJson())}');
       emit(
           state.copyWith(status: BlocStatus.fetched, departments: departments));
     });
@@ -32,12 +34,14 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
   FutureOr<void> _createDepartments(
       CreateDepartmentEvent event, Emitter<DepartmentState> emit) async {
     emit(state.copyWith(status: BlocStatus.adding));
-
     try {
       Department? department =
           await _departmentRepo.createDepartment(department: event.department);
       if (department != null && department.id != null) {
+        debugPrint('added department [ ${department.toJson()} ] ');
+        debugPrint('state = ${state.departments}');
         state.departments.add(department);
+        debugPrint('state - ${state.departments}');
         emit(state.copyWith(status: BlocStatus.added));
       } else {
         emit(state.copyWith(
@@ -45,6 +49,8 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
             error: 'Failed Adding new Department'));
       }
     } catch (e) {
+      debugPrint('Error -> [ $e ] ');
+
       emit(state.copyWith(status: BlocStatus.addfailed, error: e.toString()));
     }
   }

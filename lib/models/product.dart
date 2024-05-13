@@ -1,48 +1,53 @@
 class Product {
-  int? productId;
-  String? productName;
+  int? id;
+  String? name;
   String? unit;
   String? barcode;
 
   Product({
-    this.productId,
-    this.productName,
+    this.id,
+    this.name,
     this.unit,
     this.barcode,
   });
 
   Product copyWith({
-    int? productId,
-    String? productName,
+    int? id,
+    String? name,
     String? unit,
     String? barcode,
   }) {
     return Product(
-      productId: productId ?? this.productId,
-      productName: productName ?? this.productName,
+      id: id ?? this.id,
+      name: name ?? this.name,
       unit: unit ?? this.unit,
       barcode: barcode ?? this.barcode,
     );
   }
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        productId: json['product_id'] as int,
-        productName: json['product_name'] as String,
+        id: json['id'] as int,
+        name: json['name'] as String,
         unit: json['unit'],
         barcode: json['barcode'],
       );
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = <String, dynamic>{};
-    map['product_id'] = productId;
-    map['product_name'] = productName;
+    map['id'] = id;
+    map['name'] = name;
     map['unit'] = unit;
     map['barcode'] = barcode;
     return map;
   }
 
+  // @override
+  // String toString() {
+  //   return "Product($id,$name,$unit,$barcode)";
+  // }
+
   @override
   String toString() {
-    return "Product($productId,$productName,$unit,$barcode)";
+    return 'Product{id=$id, name=$name, unit=$unit, barcode=$barcode}';
   }
 }

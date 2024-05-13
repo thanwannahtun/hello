@@ -4,6 +4,7 @@ import 'package:hello/presentation/product/bloc/product_bloc.dart';
 import 'package:hello/models/product.dart';
 import 'package:hello/config/route/route_lists.dart';
 import 'package:hello/widgets/custom_drawer.dart';
+import 'package:hello/widgets/custom_widgets.dart';
 import 'package:hello/widgets/floating_action_button.dart';
 
 class ProductListPage extends StatefulWidget {
@@ -34,16 +35,8 @@ class _ProductListPageState extends State<ProductListPage> {
           print(
               "State is ::::::::: ${state.status} | products::::::::::: ${state.products.toString()}");
           if (state.products.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.note_add, size: 100),
-                  SizedBox(height: 20),
-                  Text('No Product Created')
-                ],
-              ),
-            );
+            return CustomWidgets.showNoDataWiget(
+                context: context, onPressed: () {});
           }
           return ListView.builder(
             itemCount: state.products.length,
@@ -87,7 +80,7 @@ class _ProductListPageState extends State<ProductListPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('product :  ${product.productName ?? 'product Name'}',
+              Text('product :  ${product.name ?? 'product Name'}',
                   style: textStyle),
               Text('unit        :  ${product.unit ?? 'unit'}',
                   style: textStyle),

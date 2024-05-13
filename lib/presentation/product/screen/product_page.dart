@@ -104,7 +104,7 @@ class _ProductPageState extends State<ProductPage> {
         children: <Widget>[
           CustomWidgets.textFormField(
             hintText: 'Product Name',
-            initialValue: _isEdit ? _product.productName : '',
+            initialValue: _isEdit ? _product.name : '',
             errorMessage: 'product name is required!',
             onSave: (value) {
               if (value != null && value.isNotEmpty) {
@@ -191,7 +191,7 @@ class _ProductPageState extends State<ProductPage> {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
         print('Edit = true , called update Bloc');
-        _product.productName = _productName;
+        _product.name = _productName;
         _product.unit = _unit;
         _product.barcode = _barcode;
         _productBloc.add(ProductUpdateEvent(_product));
@@ -203,7 +203,7 @@ class _ProductPageState extends State<ProductPage> {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
         _product = Product(
-          productName: _productName,
+          name: _productName,
           unit: _unit,
           barcode: _barcode,
         );
@@ -211,7 +211,7 @@ class _ProductPageState extends State<ProductPage> {
         _productBloc.add(ProductAddEvent(_product));
         // _productBloc.add(ProductUpdateEvent(_product.copyWith(
         // productName: _productName, barcode: _barcode, unit: _unit)));
-        print(_product.productName);
+        print(_product.name);
 
         Navigator.pop(context, true);
       }

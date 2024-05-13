@@ -93,31 +93,45 @@ class RouteGenerator {
       /// [Department] section
       case RouteLists.departmentListPage:
         return chooseRoute(
-            builder: (context) {
-              return BlocProvider<DepartmentBloc>(
-                create: (context) => DepartmentBloc(),
-                child: const DepartmentListPage(),
-              );
-            },
+            builder: (context) => const DepartmentListPage(),
             settings: settings);
       case RouteLists.departmentCreatePage:
         return chooseRoute(
-            builder: (context) {
-              return BlocProvider<DepartmentBloc>(
-                create: (context) => DepartmentBloc(),
-                child: const NewDepartmentPage(),
-              );
-            },
+            builder: (context) => const NewDepartmentPage(),
             settings: settings);
+
       case RouteLists.departmentDetailPage:
         return chooseRoute(
-            builder: (context) {
-              return BlocProvider<DepartmentBloc>(
-                create: (context) => DepartmentBloc(),
-                child: const DepartmentDetailPage(),
-              );
-            },
+            builder: (context) => const DepartmentDetailPage(),
             settings: settings);
+
+      // case RouteLists.departmentListPage:
+      //   return chooseRoute(
+      //       builder: (context) {
+      //         return BlocProvider<DepartmentBloc>(
+      //           create: (context) => DepartmentBloc(),
+      //           child: const DepartmentListPage(),
+      //         );
+      //       },
+      //       settings: settings);
+      // case RouteLists.departmentCreatePage:
+      //   return chooseRoute(
+      //       builder: (context) {
+      //         return BlocProvider<DepartmentBloc>(
+      //           create: (context) => DepartmentBloc(),
+      //           child: const NewDepartmentPage(),
+      //         );
+      //       },
+      //       settings: settings);
+      // case RouteLists.departmentDetailPage:
+      //   return chooseRoute(
+      //       builder: (context) {
+      //         return BlocProvider<DepartmentBloc>(
+      //           create: (context) => DepartmentBloc(),
+      //           child: const DepartmentDetailPage(),
+      //         );
+      //       },
+      //       settings: settings);
 
       /// [default] section
       default:

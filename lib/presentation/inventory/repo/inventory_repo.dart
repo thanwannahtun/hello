@@ -23,8 +23,8 @@ class InventoryRepo {
   Future<bool> updateCount({required Map<String, dynamic> values}) async {
     try {
       int value = await _crudTable.rawUpdate(
-        'UPDATE ${ConstantTables.inventoryTable} SET on_hand = on_hand + 1 WHERE product_id = ?',
-        [values['product_id']],
+        'UPDATE ${ConstantTables.inventoryTable} SET onHand = onHand + 1 WHERE productId = ?',
+        [values['productId']],
       );
       // int value = await _crudTable.updateData(
       //     table: ConstantTables.inventoryTable,

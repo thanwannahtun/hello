@@ -152,13 +152,13 @@ class _SplashPageState extends State<SplashPage> {
       debugPrint(' No Barcode Found ! ( index : $index ) ');
     } else {
       Product product = products[index];
-      print('++++++++++++++++++++ ${product.productId} +++++++++++++++++++');
+      print('++++++++++++++++++++ ${product.id} +++++++++++++++++++');
       scannedProducts.add(product);
       // _inventoryBloc.add(InventoryUpdateCountEvent(product));
       print('-------------------inventory splash screen');
       Inventory inventory = Inventory(
-          productId: product.productId,
-          productName: product.productName,
+          productId: product.id,
+          productName: product.name,
           unit: product.unit,
           barcode: product.barcode,
           onHand: 1);
@@ -168,8 +168,8 @@ class _SplashPageState extends State<SplashPage> {
       print('--------|-----------inventory splash screen');
 
       List<dynamic> rowForCSV = [
-        product.productId,
-        product.productName,
+        product.id,
+        product.name,
         product.barcode,
         product.unit
       ];
@@ -208,7 +208,7 @@ class ScannedProducts extends StatelessWidget {
         return Card(
           child: ListTile(
             titleTextStyle: textStyle,
-            title: Text(products[index].productName ?? ''),
+            title: Text(products[index].name ?? ''),
             subtitle: Text(products[index].barcode ?? ''),
             trailing: Text('unit : ${products[index].unit ?? ''}'),
           ),

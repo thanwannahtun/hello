@@ -194,7 +194,7 @@ class _ProductAddPageState extends State<ProductAddPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       _product = Product(
-        productName: _productName,
+        name: _productName,
         unit: _unit,
         barcode: _barcode,
       );

@@ -30,7 +30,7 @@ class ShoppingCardRepo {
   Future<bool> removeFromCard({required Product product}) async {
     try {
       int value = await _crudTable.deleteData(shoppingCardTable,
-          where: ' product_id = ? ', whereArgs: [product.productId]);
+          where: ' id = ? ', whereArgs: [product.id]);
       return value > 0;
     } catch (e) {
       return false;
@@ -43,7 +43,7 @@ class ShoppingCardRepo {
     await _crudTable.updateData(
         table: shoppingCardTable,
         values: product.toJson(),
-        where: 'product_id = ?',
-        whereArgs: [product.productId]);
+        where: 'id = ?',
+        whereArgs: [product.id]);
   }
 }

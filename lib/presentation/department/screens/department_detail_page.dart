@@ -19,22 +19,28 @@ class _DepartmentDetailPageState extends State<DepartmentDetailPage> {
   @override
   void initState() {
     _departmentBloc = context.read<DepartmentBloc>();
+    _nameController = TextEditingController();
+    _parentController = TextEditingController();
+
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     if (ModalRoute.of(context)?.settings.arguments != null) {
-      Map<String, Department> arguments =
-          ModalRoute.of(context)?.settings.arguments as Map<String, Department>;
+      Map<String, dynamic> arguments =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
-      _department = arguments['department']!;
+      _department = arguments['department'] as Department;
+      // _nameController.text = _department.name ?? '';
+      // _parentController.text = _department.parentName ?? '';
     }
     super.didChangeDependencies();
   }
 
-  final _nameController = TextEditingController();
-  final _parentController = TextEditingController();
+  late TextEditingController _nameController;
+  late TextEditingController _parentController;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,25 +50,68 @@ class _DepartmentDetailPageState extends State<DepartmentDetailPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(ConstantString.paddingM),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _nameController,
-              initialValue: _department.name ?? 'name',
-              decoration: const InputDecoration(
-                hintText: 'Department Name',
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                // controller: _nameController,
+                initialValue: _department.name ?? 'name',
+                decoration: const InputDecoration(
+                  hintText: 'Department Name',
+                ),
+                validator: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    return null;
+                  } else {
+                    return 'Require this field!';
+                  }
+                },
+                onSaved: (newValue) {
+                  _nameController.text = newValue!;
+                },
               ),
-            ),
-            TextFormField(
-              controller: _parentController,
-              initialValue: _department.parentName ?? 'parent',
-              decoration: const InputDecoration(
-                hintText: 'Parent Name',
+              TextFormField(
+                // controller: _parentController,
+                initialValue: _department.parentName ?? 'parent',
+                decoration: const InputDecoration(
+                  hintText: 'Parent Name',
+                ),
+                validator: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    return null;
+                  } else {
+                    return 'Require this field!';
+                  }
+                },
+
+                onSaved: (newValue) {
+                  _parentController.text = newValue!;
+                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+      persistentFooterButtons: [
+        Center(
+          child: ElevatedButton(
+              style: const ButtonStyle(
+                  minimumSize: MaterialStatePropertyAll(Size(100, 50))),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  final department = Department(
+                      name: _nameController.text,
+                      parentName: _parentController.text);
+                  _departmentBloc
+                      .add(CreateDepartmentEvent(department: department));
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Update')),
+        )
+      ],
     );
   }
 }

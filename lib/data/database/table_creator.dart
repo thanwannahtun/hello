@@ -5,13 +5,14 @@ import 'package:hello/utils/constant_culumns.dart';
 class TableCreator {
   static final List<String> _tables = [
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.productTable} (
-      ${ConstantCulumn.productId} INTEGER PRIMARY KEY, 
-      ${ConstantCulumn.productName} TEXT NOT NULL, 
+      ${ConstantCulumn.id} INTEGER PRIMARY KEY, 
+      ${ConstantCulumn.name} TEXT NOT NULL, 
       ${ConstantCulumn.unit} TEXT, 
+      ${ConstantCulumn.supplierId} INTEGER, 
       ${ConstantCulumn.barcode} TEXT 
     )''',
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.inventoryTable} (
-      ${ConstantCulumn.inventoryId} INTEGER PRIMARY KEY, 
+      ${ConstantCulumn.id} INTEGER PRIMARY KEY, 
       ${ConstantCulumn.productId} INTEGER, 
       ${ConstantCulumn.productName} TEXT NOT NULL, 
       ${ConstantCulumn.unit} TEXT,
@@ -19,17 +20,55 @@ class TableCreator {
       ${ConstantCulumn.onHand} REAL
     )''',
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.categoryTable} (
-      ${ConstantCulumn.categoryId} INTEGER PRIMARY KEY,
-      ${ConstantCulumn.categoryName} TEXT NOT NULL,
+      ${ConstantCulumn.id} INTEGER PRIMARY KEY,
+      ${ConstantCulumn.name} TEXT NOT NULL,
       ${ConstantCulumn.parentId} INTEGER,
       ${ConstantCulumn.parentName} TEXT
     )''',
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.shoppingCardTable} (
+      ${ConstantCulumn.id} INTEGER PRIMARY KEY
+    )''',
+    '''CREATE TABLE IF NOT EXISTS ${ConstantTables.productLineTable} (
       ${ConstantCulumn.id} INTEGER PRIMARY KEY,
+      ${ConstantCulumn.shoppingCardId} INTEGER,
+      ${ConstantCulumn.productId} INTEGER NOT NULL,
+      ${ConstantCulumn.productName} TEXT NOT NULL,
+      ${ConstantCulumn.quantity} INTEGER NOT NULL
+    )''',
+    '''CREATE TABLE IF NOT EXISTS ${ConstantTables.saleOrderTable} (
+      ${ConstantCulumn.id} INTEGER PRIMARY KEY,
+      ${ConstantCulumn.soNo} INTEGER NOT NULL UNIQUE,
+      ${ConstantCulumn.orderType} TEXT,
+      ${ConstantCulumn.orderDate} TEXT NOT NULL,
+      ${ConstantCulumn.deliveryStatus} TEXT,
+      ${ConstantCulumn.salePerson} TEXT,
+      ${ConstantCulumn.salePersonId} INTEGER NOT NULL,
+      ${ConstantCulumn.customerId} INTEGER NOT NULL,
+      ${ConstantCulumn.customerName} TEXT,
+      ${ConstantCulumn.salePersonName} TEXT,
+      ${ConstantCulumn.township} TEXT,
+      ${ConstantCulumn.ward} TEXT,
+      ${ConstantCulumn.phone} TEXT
+    )''',
+    '''CREATE TABLE IF NOT EXISTS ${ConstantTables.saleOrderLineTable} (
+      ${ConstantCulumn.id} INTEGER PRIMARY KEY,
+      ${ConstantCulumn.orderId} INTEGER NOT NULL,
+      ${ConstantCulumn.productId} INTEGER NOT NULL,
+      ${ConstantCulumn.productName} TEXT NOT NULL,
+      ${ConstantCulumn.description} TEXT,
+      ${ConstantCulumn.saleType} TEXT,
+      ${ConstantCulumn.orderQuantity} INTEGER NOT NULL,
+      ${ConstantCulumn.quantityToDeliver} REAL NOT NULL,
+      ${ConstantCulumn.quantityToInvoice} REAL,
+      ${ConstantCulumn.productUom} TEXT NOT NULL,
+      ${ConstantCulumn.productUnitPrice} TEXT NOT NULL,
+      ${ConstantCulumn.taxes} REAL,
+      ${ConstantCulumn.discount} REAL,
+      ${ConstantCulumn.subtotal} REAL
     )'''
   ];
 
-// (1) table inventory_table has no column named barcode in "INSERT INTO inventory_table (product_id, product_name, unit, barcode) VALUES (?, ?, ?, ?)"
+  static const String saleOrderLineTable = "sale_order_line_table";
   static Future<void> createTables(Database db) async {
     for (var table in _tables) {
       await db.execute(table);
@@ -43,3 +82,14 @@ class TableCreator {
     }
   }
 }
+
+/*
+INSERT INTO ${ConstantTables.saleOrderTable}
+  (${ConstantColumn.soNo}, ${ConstantColumn.orderType}, ${ConstantColumn.orderDate},
+  ${ConstantColumn.deliveryStatus}, ${ConstantColumn.salePerson},
+  ${ConstantColumn.salePersonId}, ${ConstantColumn.customerId}, ${ConstantColumn.customerName},
+  ${ConstantColumn.salePersonName}, ${ConstantColumn.township}, ${ConstantColumn.ward},
+  ${ConstantColumn.phone})
+VALUES ((SELECT COALESCE(MAX(${ConstantColumn.soNo}), 0) + 1 FROM ${ConstantTables.saleOrderTable}), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+*/

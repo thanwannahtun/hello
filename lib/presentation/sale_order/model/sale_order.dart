@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:hello/presentation/sale_order/model/sale_order_line.dart';
 
 class SaleOrder {
@@ -15,7 +13,8 @@ class SaleOrder {
       this.phone,
       this.ward,
       this.township,
-      this.salePerson});
+      this.salePersonName,
+      this.salePersonId});
 
   final int? id;
   final String? soNo;
@@ -28,7 +27,8 @@ class SaleOrder {
   final String? phone;
   final String? ward;
   final String? township;
-  final String? salePerson;
+  final String? salePersonId;
+  final String? salePersonName;
 
   factory SaleOrder.fromJson(Map<String, dynamic> json) {
     List<SaleOrderLine> saleOrderLines = [];
@@ -41,7 +41,8 @@ class SaleOrder {
       orderType: json['orderType'],
       orderDate: json['orderDate'],
       deliveryStatus: json['deliveryStatus'],
-      salePerson: json['salePerson'],
+      salePersonId: json['salePersonId'],
+      salePersonName: json['salePersonName'],
       township: json['township'],
       ward: json['ward'],
       phone: json['phone'],
@@ -60,7 +61,8 @@ class SaleOrder {
     map['orderType'] = orderType;
     map['orderDate'] = orderDate;
     map['deliveryStatus'] = deliveryStatus;
-    map['salePerson'] = salePerson;
+    map['salePersonId'] = salePersonId;
+    map['salePersonName'] = salePersonName;
     map['township'] = township;
     map['ward'] = ward;
     map['phone'] = phone;
@@ -84,7 +86,8 @@ class SaleOrder {
       String? phone,
       String? ward,
       String? township,
-      String? salePerson}) {
+      String? salePersonId,
+      String? salePersonName}) {
     return SaleOrder(
         id: id ?? this.id,
         soNo: soNo ?? this.soNo,
@@ -97,6 +100,7 @@ class SaleOrder {
         phone: phone ?? phone,
         ward: ward ?? ward,
         township: township ?? township,
-        salePerson: salePerson ?? salePerson);
+        salePersonId: salePersonId ?? salePersonId,
+        salePersonName: salePersonName ?? salePersonName);
   }
 }

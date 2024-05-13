@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:hello/presentation/sale_order/model/so_product_line.dart';
-
 /*
 
 id
@@ -30,7 +27,6 @@ class SaleOrderLine {
       this.productName,
       this.description,
       this.saletype,
-      this.balanceQuantityInstock,
       this.orderQuantity,
       this.quantityToDeliver,
       this.quantityToInvoice,
@@ -46,7 +42,6 @@ class SaleOrderLine {
   final int? productName;
   final int? description;
   final int? saletype;
-  final int? balanceQuantityInstock;
   final int? orderQuantity;
   final int? quantityToDeliver;
   final int? quantityToInvoice;
@@ -63,7 +58,6 @@ class SaleOrderLine {
         productName: json['productName'],
         description: json['description'],
         saletype: json['saletype'],
-        balanceQuantityInstock: json['balanceQuantityInstock'],
         orderQuantity: json['orderQuantity'],
         quantityToDeliver: json['quantityToDeliver'],
         quantityToInvoice: json['quantityToInvoice'],
@@ -82,7 +76,6 @@ class SaleOrderLine {
     map['productName'] = productName;
     map['description'] = description;
     map['saletype'] = saletype;
-    map['balanceQuantityInstock'] = balanceQuantityInstock;
     map['orderQuantity'] = orderQuantity;
     map['quantityToInvoice'] = quantityToInvoice;
     map['quantityToDeliver'] = quantityToDeliver;
@@ -102,7 +95,6 @@ class SaleOrderLine {
       int? productName,
       int? description,
       int? saletype,
-      int? balanceQuantityInstock,
       int? orderQuantity,
       int? quantityToDeliver,
       int? quantityToInvoice,
@@ -118,8 +110,6 @@ class SaleOrderLine {
         productName: productName ?? this.productName,
         description: description ?? this.description,
         saletype: saletype ?? this.saletype,
-        balanceQuantityInstock:
-            balanceQuantityInstock ?? this.balanceQuantityInstock,
         orderQuantity: orderQuantity ?? this.orderQuantity,
         quantityToDeliver: quantityToDeliver ?? this.quantityToDeliver,
         quantityToInvoice: quantityToInvoice ?? this.quantityToInvoice,

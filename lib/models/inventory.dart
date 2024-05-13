@@ -1,13 +1,13 @@
 class Inventory {
   Inventory(
-      {this.inventoryId,
+      {this.id,
       this.productId,
       this.productName,
       this.unit,
       this.barcode,
       this.onHand});
 
-  int? inventoryId;
+  int? id;
   int? productId;
   String? productName;
   String? unit;
@@ -15,34 +15,34 @@ class Inventory {
   double? onHand;
 
   factory Inventory.fromJson(Map<String, dynamic> json) => Inventory(
-        inventoryId: json['inventory_id'] as int,
-        productId: json['product_id'],
-        productName: json['product_name'] as String,
+        id: json['id'] as int,
+        productId: json['productId'],
+        productName: json['productName'] as String,
         unit: json['unit'],
         barcode: json['barcode'],
-        onHand: json['on_hand'],
+        onHand: json['onHand'],
       );
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = <String, dynamic>{};
-    map['inventory_id'] = inventoryId;
-    map['product_id'] = productId;
-    map['product_name'] = productName;
+    map['id'] = id;
+    map['productId'] = productId;
+    map['productName'] = productName;
     map['unit'] = unit;
     map['barcode'] = barcode;
-    map['on_hand'] = onHand;
+    map['onHand'] = onHand;
     return map;
   }
 
   Inventory copyWith(
-      {int? inventoryId,
+      {int? id,
       int? productId,
       String? productName,
       String? unit,
       String? barcode,
       double? onHand}) {
     return Inventory(
-        inventoryId: inventoryId ?? this.inventoryId,
+        id: id ?? this.id,
         productId: productId ?? this.productId,
         productName: productName ?? this.productName,
         unit: unit ?? this.unit,

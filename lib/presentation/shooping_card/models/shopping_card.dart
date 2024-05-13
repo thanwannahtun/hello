@@ -13,8 +13,8 @@ class ShoppingCard {
   factory ShoppingCard.fromJson(Map<String, dynamic> json) {
     final List<ProductLine> productlines = [];
 
-    if (json['product_lines'] != null) {
-      for (var line in json['product_lines']) {
+    if (json['productLines'] != null) {
+      for (var line in json['productLines']) {
         productlines.add(ProductLine.fromJson(line));
       }
     }
@@ -27,7 +27,7 @@ class ShoppingCard {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = <String, dynamic>{};
     map['id'] = id;
-    map['product_lines'] = productLines;
+    map['productLines'] = productLines;
     return map;
   }
 }

@@ -12,9 +12,13 @@ class CustomWidgets {
     return Center(
       child: InkWell(
         onTap: () => onPressed,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width / 0.7,
-          child: const Text('No Data!'),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.note_add, size: 100),
+            SizedBox(height: 20),
+            Text('No Data Found!')
+          ],
         ),
       ),
     );
