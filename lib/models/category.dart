@@ -1,5 +1,10 @@
-class Category {
-  Category({this.id, this.name, this.parentId, this.parentName});
+import 'package:flutter/material.dart';
+import 'package:hello/core/utils/entity.dart';
+
+@immutable
+class Category extends Entity {
+  Category({this.id, this.name, this.parentId, this.parentName})
+      : super(entityId: id, entityName: name);
   int? id;
   String? name;
   int? parentId;
@@ -34,4 +39,7 @@ class Category {
   String toString() {
     return 'Category{id=$id, name=$name, parentId=$parentId, parentName=$parentName}';
   }
+
+  @override
+  List<Object?> get props => [id, name, parentId, parentName];
 }

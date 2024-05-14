@@ -1,7 +1,8 @@
-import 'package:equatable/equatable.dart';
+import 'package:hello/core/utils/entity.dart';
 
-class Department extends Equatable {
-  const Department({this.id, this.name, this.parentId, this.parentName});
+class Department extends Entity {
+  const Department({this.id, this.name, this.parentId, this.parentName})
+      : super(entityId: id, entityName: name);
   final int? id;
   final String? name;
   final int? parentId;

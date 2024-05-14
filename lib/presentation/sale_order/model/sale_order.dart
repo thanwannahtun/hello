@@ -1,7 +1,8 @@
+import 'package:hello/core/utils/entity.dart';
 import 'package:hello/presentation/sale_order/model/sale_order_line.dart';
 
-class SaleOrder {
-  SaleOrder(
+class SaleOrder extends Entity {
+  const SaleOrder(
       {this.id,
       this.soNo,
       this.orderType,
@@ -14,7 +15,8 @@ class SaleOrder {
       this.ward,
       this.township,
       this.salePersonName,
-      this.salePersonId});
+      this.salePersonId})
+      : super(entityId: id, entityName: soNo);
 
   final int? id;
   final String? soNo;
@@ -103,4 +105,21 @@ class SaleOrder {
         salePersonId: salePersonId ?? salePersonId,
         salePersonName: salePersonName ?? salePersonName);
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        soNo,
+        orderType,
+        orderDate,
+        deliveryStatus,
+        saleOrderLines,
+        cutomerId,
+        customerName,
+        phone,
+        ward,
+        township,
+        salePersonId,
+        salePersonName
+      ];
 }

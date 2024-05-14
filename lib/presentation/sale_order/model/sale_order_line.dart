@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 /*
 
 id
@@ -19,8 +20,10 @@ subtotal
 
 */
 
-class SaleOrderLine {
-  SaleOrderLine(
+import 'package:hello/core/utils/entity.dart';
+
+class SaleOrderLine extends Entity {
+  const SaleOrderLine(
       {this.id,
       this.orderId,
       this.productId,
@@ -39,17 +42,17 @@ class SaleOrderLine {
   final int? id;
   final int? orderId;
   final int? productId;
-  final int? productName;
-  final int? description;
-  final int? saletype;
-  final int? orderQuantity;
-  final int? quantityToDeliver;
-  final int? quantityToInvoice;
-  final int? productUom;
-  final int? productUnitPrice;
-  final int? taxes;
-  final int? discount;
-  final int? subtotal;
+  final String? productName;
+  final String? description;
+  final String? saletype;
+  final double? orderQuantity;
+  final double? quantityToDeliver;
+  final double? quantityToInvoice;
+  final String? productUom;
+  final double? productUnitPrice;
+  final double? taxes;
+  final double? discount;
+  final double? subtotal;
 
   factory SaleOrderLine.fromJson(Map<String, dynamic> json) => SaleOrderLine(
         id: json['id'],
@@ -88,21 +91,38 @@ class SaleOrderLine {
     return map;
   }
 
+  @override
+  List<Object?> get props => [
+        id,
+        orderId,
+        productId,
+        productName,
+        description,
+        saletype,
+        orderQuantity,
+        quantityToDeliver,
+        quantityToInvoice,
+        productUom,
+        productUnitPrice,
+        taxes,
+        discount,
+        subtotal
+      ];
   SaleOrderLine copyWith(
       {int? id,
       int? orderId,
       int? productId,
-      int? productName,
-      int? description,
-      int? saletype,
-      int? orderQuantity,
-      int? quantityToDeliver,
-      int? quantityToInvoice,
-      int? productUom,
-      int? productUnitPrice,
-      int? taxes,
-      int? discount,
-      int? subtotal}) {
+      String? productName,
+      String? description,
+      String? saletype,
+      double? orderQuantity,
+      double? quantityToDeliver,
+      double? quantityToInvoice,
+      String? productUom,
+      double? productUnitPrice,
+      double? taxes,
+      double? discount,
+      double? subtotal}) {
     return SaleOrderLine(
         id: id ?? this.id,
         orderId: orderId ?? this.orderId,

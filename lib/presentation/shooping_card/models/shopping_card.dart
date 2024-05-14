@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:hello/presentation/shooping_card/models/product_line.dart';
 
-class ShoppingCard {
-  ShoppingCard({this.id, this.productLines});
+class ShoppingCard extends Equatable {
+  const ShoppingCard({this.id, this.productLines});
   final int? id;
   final List<ProductLine>? productLines;
 
@@ -30,4 +31,7 @@ class ShoppingCard {
     map['productLines'] = productLines;
     return map;
   }
+
+  @override
+  List<Object?> get props => [id, productLines];
 }

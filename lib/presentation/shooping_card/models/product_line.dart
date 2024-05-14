@@ -1,10 +1,13 @@
-class ProductLine {
-  ProductLine(
+import 'package:hello/core/utils/entity.dart';
+
+class ProductLine extends Entity {
+  const ProductLine(
       {required this.shoppingCardId,
       this.id,
       this.productId,
       this.quantity,
-      this.productName});
+      this.productName})
+      : super(entityId: id, entityName: productName);
 
   final int? id;
   final int shoppingCardId;
@@ -43,6 +46,10 @@ class ProductLine {
     map['quantity'] = quantity;
     return map;
   }
+
+  @override
+  List<Object?> get props =>
+      [id, shoppingCardId, productId, quantity, productName];
 }
 
 /*

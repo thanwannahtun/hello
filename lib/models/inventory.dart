@@ -1,11 +1,14 @@
-class Inventory {
+import 'package:hello/core/utils/entity.dart';
+
+class Inventory extends Entity {
   Inventory(
       {this.id,
       this.productId,
       this.productName,
       this.unit,
       this.barcode,
-      this.onHand});
+      this.onHand})
+      : super(entityId: id, entityName: productName);
 
   int? id;
   int? productId;
@@ -49,4 +52,8 @@ class Inventory {
         barcode: barcode ?? this.barcode,
         onHand: onHand ?? this.onHand);
   }
+
+  @override
+  List<Object?> get props =>
+      [id, productId, productName, unit, barcode, onHand];
 }

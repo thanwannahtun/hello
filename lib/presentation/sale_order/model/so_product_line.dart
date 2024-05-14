@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hello/core/utils/entity.dart';
 
-class SoProductLine {
-  SoProductLine(
+class SoProductLine extends Entity {
+  const SoProductLine(
       {this.id,
       this.productId,
       this.productName,
       this.unitPrice,
       this.quantity,
       this.description,
-      this.total});
+      this.total})
+      : super(entityId: id, entityName: productName);
   final int? id;
   final int? productId;
   final String? productName;
@@ -24,7 +26,8 @@ class SoProductLine {
     return map;
   }
 
-  factory SoProductLine.fromJson(Map<String, dynamic> json) => SoProductLine();
+  factory SoProductLine.fromJson(Map<String, dynamic> json) =>
+      const SoProductLine();
 
   SoProductLine copyWith(
       {int? id,
@@ -43,4 +46,8 @@ class SoProductLine {
         description: description ?? this.description,
         total: total ?? this.total);
   }
+
+  @override
+  List<Object?> get props =>
+      [id, productId, productName, unitPrice, quantity, description, total];
 }

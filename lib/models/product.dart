@@ -1,4 +1,6 @@
-class Product {
+import 'package:hello/core/utils/entity.dart';
+
+class Product extends Entity {
   int? id;
   String? name;
   String? unit;
@@ -9,7 +11,7 @@ class Product {
     this.name,
     this.unit,
     this.barcode,
-  });
+  }) : super(entityId: id, entityName: name);
 
   Product copyWith({
     int? id,
@@ -50,4 +52,7 @@ class Product {
   String toString() {
     return 'Product{id=$id, name=$name, unit=$unit, barcode=$barcode}';
   }
+
+  @override
+  List<Object?> get props => [id, name, unit, barcode];
 }
