@@ -18,3 +18,8 @@ final class UpdateDepartmentEvent extends DepartmentEvent {
   final Department department;
   const UpdateDepartmentEvent({required this.department});
 }
+
+final class DeleteDepartmentEvent extends DepartmentEvent {
+  final Department department;
+  const DeleteDepartmentEvent({required this.department});
+}

@@ -47,4 +47,15 @@ class DepartmentRepo {
       return false;
     }
   }
+
+  Future<bool> deleteDepartment({required Department department}) async {
+    try {
+      int value = await _crudTable.deleteData(_departmentTable,
+          where: 'id = ?', whereArgs: [department.id]);
+      return value > 0;
+    } catch (e) {
+      debugPrint('ERROR [ $e ] ');
+      return false;
+    }
+  }
 }
