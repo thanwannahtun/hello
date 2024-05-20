@@ -11,5 +11,7 @@ final class SaleOrderGetAllEvent extends SaleOrderEvent {}
 
 final class SaleOrderCreateEvent extends SaleOrderEvent {
   final SaleOrder saleOrder;
-  const SaleOrderCreateEvent({required this.saleOrder});
+  final List<SaleOrderLine> orderLines;
+  const SaleOrderCreateEvent(
+      {required this.saleOrder, required this.orderLines});
 }

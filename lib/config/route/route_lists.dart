@@ -10,4 +10,7 @@ class RouteLists {
   static const String departmentListPage = 'department_list_page';
   static const String departmentDetailPage = 'department_detail_page';
   static const String departmentCreatePage = 'new_department_page';
+
+  static const String saleOrderListPage = 'sale_order_list_page';
+  static const String saleOrderCreatePage = 'sale_order_create_page';
 }

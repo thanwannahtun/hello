@@ -6,6 +6,7 @@ import 'package:hello/presentation/product/bloc/product_bloc.dart';
 import 'package:hello/config/route/route_generator.dart';
 import 'package:hello/config/route/route_lists.dart';
 import 'package:hello/config/theme/theme.dart';
+import 'package:hello/presentation/sale_order/bloc/sale_order_bloc.dart';
 
 void main(List<String> args) {
   //WidgetBinding.ensureInitialize();
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         /// [Department]
         BlocProvider<DepartmentBloc>(
           create: (context) => DepartmentBloc(),
+        ),
+        BlocProvider<SaleOrderBloc>(
+          create: (context) => SaleOrderBloc(),
         ),
       ],
       child: MaterialApp(

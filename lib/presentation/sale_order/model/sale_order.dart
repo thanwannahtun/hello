@@ -50,7 +50,8 @@ class SaleOrder extends Entity {
       phone: json['phone'],
       customerName: json['customerName'],
       cutomerId: json['cutomerId'],
-      saleOrderLines: saleOrderLines,
+      // saleOrderLines: saleOrderLines,
+      saleOrderLines: const [], // FROM LINE
 
       // saleOrderLines: (json['saleOrderLines'] as List).map(orderLine => SaleOrderLine.fromJson(orderLine)).toList,
     );
@@ -70,9 +71,9 @@ class SaleOrder extends Entity {
     map['phone'] = phone;
     map['customerName'] = customerName;
     map['cutomerId'] = cutomerId;
-    map['saleOrderLines'] = saleOrderLines != null
-        ? saleOrderLines?.map((e) => e.toJson()).toList()
-        : [];
+    // map['saleOrderLines'] = saleOrderLines != null
+    //     ? saleOrderLines?.map((e) => e.toJson()).toList()
+    //     : [];
     return map;
   }
 

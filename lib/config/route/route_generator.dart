@@ -7,6 +7,8 @@ import 'package:hello/presentation/department/screens/department_list_page.dart'
 import 'package:hello/presentation/inventory/bloc/inventory_bloc.dart';
 import 'package:hello/presentation/product/bloc/product_bloc.dart';
 import 'package:hello/presentation/inventory/screens/inventory_page.dart';
+import 'package:hello/presentation/sale_order/screen/sale_order_create_page.dart';
+import 'package:hello/presentation/sale_order/screen/sale_order_page.dart';
 import 'package:hello/screens/no_route_page.dart';
 import 'package:hello/presentation/product/screen/product_add_page.dart';
 import 'package:hello/presentation/product/screen/product_list.dart';
@@ -134,6 +136,14 @@ class RouteGenerator {
       //       settings: settings);
 
       /// [default] section
+      case RouteLists.saleOrderListPage:
+        return chooseRoute(
+            builder: (context) => const SaleOrderPage(), settings: settings);
+      case RouteLists.saleOrderCreatePage:
+        return chooseRoute(
+            builder: (context) => const SaleOrderCreatePage(),
+            settings: settings);
+
       default:
         return chooseRoute(
             builder: (context) => const NoRouteScreen(), settings: settings);

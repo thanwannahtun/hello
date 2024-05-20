@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hello/presentation/bloc/bloc_status.dart';
 import 'package:hello/presentation/sale_order/model/sale_order.dart';
+import 'package:hello/presentation/sale_order/model/sale_order_line.dart';
 import 'package:hello/presentation/sale_order/repo/sale_order_repo.dart';
 
 part 'sale_order_event.dart';
@@ -24,6 +26,7 @@ class SaleOrderBloc extends Bloc<SaleOrderEvent, SaleOrderState> {
     emit(state.copyWith(status: BlocStatus.fetching));
     try {
       List<SaleOrder> saleOrders = await _saleOrderRepo.getAllSaleOrders();
+      debugPrint('saleOrders length ::::: ${saleOrders.length}');
       emit(state.copyWith(status: BlocStatus.fetched, saleOrders: saleOrders));
     } catch (e) {
       emit(state.copyWith(status: BlocStatus.fetched, error: e.toString()));
@@ -34,8 +37,8 @@ class SaleOrderBloc extends Bloc<SaleOrderEvent, SaleOrderState> {
       SaleOrderCreateEvent event, Emitter<SaleOrderState> emit) async {
     emit(state.copyWith(status: BlocStatus.adding));
     try {
-      SaleOrder? saleOrder = await _saleOrderRepo.addSaleOrderAndGetaddedOrder(
-          saleOrder: event.saleOrder);
+      SaleOrder? saleOrder = await _saleOrderRepo.addSaleOrderAndGetAddedOrder(
+          saleOrder: event.saleOrder, orderLines: event.orderLines);
 
       if (saleOrder != null) {
         state.saleOrders.add(saleOrder);
