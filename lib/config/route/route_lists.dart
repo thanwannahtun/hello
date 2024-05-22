@@ -13,4 +13,5 @@ class RouteLists {
 
   static const String saleOrderListPage = 'sale_order_list_page';
   static const String saleOrderCreatePage = 'sale_order_create_page';
+  static const String saleOrderDetailPage = 'sale_order_detail_page';
 }

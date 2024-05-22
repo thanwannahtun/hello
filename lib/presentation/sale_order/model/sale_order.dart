@@ -123,4 +123,12 @@ class SaleOrder extends Entity {
         salePersonId,
         salePersonName
       ];
+
+  double getTotalSaleOrderLineAmount() {
+    if (saleOrderLines == null && saleOrderLines!.isEmpty) {
+      return 0.0;
+    }
+    return saleOrderLines!.fold(0,
+        (previousValue, element) => previousValue + (element.subtotal ?? 0.0));
+  }
 }

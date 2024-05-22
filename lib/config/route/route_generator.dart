@@ -15,6 +15,7 @@ import 'package:hello/presentation/product/screen/product_list.dart';
 import 'package:hello/presentation/product/screen/product_page.dart';
 import 'package:hello/screens/splash_screen.dart';
 import 'package:hello/utils/email_sender.dart';
+import 'package:hello/presentation/sale_order/screen/sale_order_detail_page.dart';
 // import 'package:hello/utils/email_sender.dart';
 import 'package:hello/config/route/route_lists.dart';
 
@@ -142,6 +143,11 @@ class RouteGenerator {
       case RouteLists.saleOrderCreatePage:
         return chooseRoute(
             builder: (context) => const SaleOrderCreatePage(),
+            settings: settings);
+
+      case RouteLists.saleOrderDetailPage:
+        return chooseRoute(
+            builder: (context) => const SaleOrderDetailPage(),
             settings: settings);
 
       default:
