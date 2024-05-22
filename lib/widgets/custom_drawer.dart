@@ -56,6 +56,15 @@ class CustomDrawer extends StatelessWidget {
           const Divider(
             height: ConstantString.paddingM,
           ),
+          ListTile(
+            onTap: () =>
+                Navigator.pushNamed(context, RouteLists.saleOrderListPage),
+            leading: const Icon(Icons.list_rounded),
+            title: const Text('Sale Order List Page'),
+          ),
+          const Divider(
+            height: ConstantString.paddingM,
+          ),
         ],
       ),
     );

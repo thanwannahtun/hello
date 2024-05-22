@@ -37,11 +37,10 @@ class TableCreator {
     )''',
     '''CREATE TABLE IF NOT EXISTS ${ConstantTables.saleOrderTable} (
       ${ConstantCulumn.id} INTEGER PRIMARY KEY,
-      ${ConstantCulumn.soNo} INTEGER NOT NULL UNIQUE,
+      ${ConstantCulumn.soNo} TEXT NOT NULL UNIQUE,
       ${ConstantCulumn.orderType} TEXT,
       ${ConstantCulumn.orderDate} TEXT NOT NULL,
       ${ConstantCulumn.deliveryStatus} TEXT,
-      ${ConstantCulumn.salePerson} TEXT,
       ${ConstantCulumn.salePersonId} INTEGER NOT NULL,
       ${ConstantCulumn.customerId} INTEGER NOT NULL,
       ${ConstantCulumn.customerName} TEXT,
@@ -61,14 +60,13 @@ class TableCreator {
       ${ConstantCulumn.quantityToDeliver} REAL NOT NULL,
       ${ConstantCulumn.quantityToInvoice} REAL,
       ${ConstantCulumn.productUom} TEXT NOT NULL,
-      ${ConstantCulumn.productUnitPrice} TEXT NOT NULL,
+      ${ConstantCulumn.productUnitPrice} REAL NOT NULL,
       ${ConstantCulumn.taxes} REAL,
       ${ConstantCulumn.discount} REAL,
       ${ConstantCulumn.subtotal} REAL
     )'''
   ];
 
-  static const String saleOrderLineTable = "sale_order_line_table";
   static Future<void> createTables(Database db) async {
     for (var table in _tables) {
       await db.execute(table);
@@ -84,6 +82,9 @@ class TableCreator {
 }
 
 /*
+// static const String saleOrderLineTable = "sale_order_line_table";
+
+
 INSERT INTO ${ConstantTables.saleOrderTable}
   (${ConstantColumn.soNo}, ${ConstantColumn.orderType}, ${ConstantColumn.orderDate},
   ${ConstantColumn.deliveryStatus}, ${ConstantColumn.salePerson},

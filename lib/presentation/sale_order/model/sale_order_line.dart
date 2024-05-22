@@ -45,7 +45,7 @@ class SaleOrderLine extends Entity {
   final String? productName;
   final String? description;
   final String? saletype;
-  final double? orderQuantity;
+  final int? orderQuantity;
   final double? quantityToDeliver;
   final double? quantityToInvoice;
   final String? productUom;
@@ -115,7 +115,7 @@ class SaleOrderLine extends Entity {
       String? productName,
       String? description,
       String? saletype,
-      double? orderQuantity,
+      int? orderQuantity,
       double? quantityToDeliver,
       double? quantityToInvoice,
       String? productUom,

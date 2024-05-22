@@ -108,4 +108,11 @@ class CRUDTable {
     await _getDatabase();
     return _db.rawInsert(sql, arguments);
   }
+
+  Future<T> insertByTransition<T>(
+      String sql, Future<T> Function(Transaction) action,
+      {bool? exclusive}) async {
+    await _getDatabase();
+    return _db.transaction<T>(action, exclusive: exclusive);
+  }
 }
