@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hello/config/route/route_lists.dart';
+import 'package:hello/presentation/bloc/bloc_status.dart';
 import 'package:hello/presentation/sale_order/bloc/sale_order_bloc.dart';
 import 'package:hello/presentation/sale_order/model/sale_order.dart';
 import 'package:hello/presentation/sale_order/model/sale_order_line.dart';
@@ -38,14 +40,15 @@ class _SaleOrderPageState extends State<SaleOrderPage> {
         padding: const EdgeInsets.all(ConstantString.paddingM),
         child: Column(
           children: [
-            CustomSearchTextField(
-              onPressed: () {},
-              icon: const Icon(Icons.filter_alt),
-            ),
             const SizedBox(height: ConstantString.paddingM),
             const Divider(height: ConstantString.paddingM),
             BlocConsumer<SaleOrderBloc, SaleOrderState>(
               builder: (context, state) {
+                if (state.status == BlocStatus.fetching) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 if (state.saleOrders.isEmpty) {
                   return CustomWidgets.showNoDataWiget(
                     context: context,
@@ -61,7 +64,9 @@ class _SaleOrderPageState extends State<SaleOrderPage> {
                   },
                 );
               },
-              listener: (context, state) {},
+              listener: (context, state) {
+                if (state.status == BlocStatus.fetching) {}
+              },
             )
           ],
         ),
