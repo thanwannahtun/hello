@@ -32,7 +32,7 @@ class SaleOrderRepo {
       /// start filter by object.id saleOrder['id']
       List<Map<String, dynamic>> orderLineMap = await _crudTable.readData(
           saleOrderLineTable,
-          where: 'soId = ?',
+          where: ' id = ?',
           whereArgs: [saleOrder['id'] as int]);
       List<SaleOrderLine> saleOrderLines =
           orderLineMap.map((e) => SaleOrderLine.fromJson(e)).toList();
@@ -41,7 +41,7 @@ class SaleOrderRepo {
       saleOrders.add(SaleOrder(
           id: saleOrder['id'],
           customerName: saleOrder['customerName'],
-          cutomerId: saleOrder['customerId'],
+          customerId: saleOrder['customerId'],
           deliveryStatus: saleOrder['deliveryStatus'],
           orderDate: saleOrder['orderDate'],
           orderType: saleOrder['orderType'],
@@ -77,7 +77,7 @@ class SaleOrderRepo {
   //   }
   //   return null;
   // }
-
+/*
   Future<SaleOrder?> addSaleOrderAndGetAddedOrder({
     required SaleOrder saleOrder,
     required List<SaleOrderLine> orderLines,
@@ -131,7 +131,7 @@ class SaleOrderRepo {
             ward: saleOrders.first['ward'],
             phone: saleOrders.first['phone'],
             customerName: saleOrders.first['customerName'],
-            cutomerId: saleOrders.first['cutomerId'],
+            customerId: saleOrders.first['cutomerId'],
             saleOrderLines: saleOrderLines,
           )
               // .copyWith(saleOrderLines: saleOrderLines)
@@ -147,6 +147,17 @@ class SaleOrderRepo {
       return null;
     }
   }
+
+*/
+  // Future<SaleOrder?> addSaleOrder({required SaleOrder saleorder}) async {
+  //   int id = await _crudTable.insertData(saleOrderTable, saleorder.toJson());
+  //   if(id < 0) {
+  //     return null;
+  //   }
+  //   List<Map<String,dynamic>> saleOrderMap = await _crudTable.readData(saleOrderTable,where : ' id = ?',whereArgs : [id]);
+  //   return saleOrderMap.map((so) => so.fromJson()).toList().first;
+
+  // }
 }
 
 /*

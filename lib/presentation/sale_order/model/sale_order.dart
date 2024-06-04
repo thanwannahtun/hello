@@ -9,7 +9,7 @@ class SaleOrder extends Entity {
       this.orderDate,
       this.deliveryStatus,
       this.saleOrderLines,
-      this.cutomerId,
+      this.customerId,
       this.customerName,
       this.phone,
       this.ward,
@@ -24,12 +24,12 @@ class SaleOrder extends Entity {
   final String? orderDate;
   final String? deliveryStatus;
   final List<SaleOrderLine>? saleOrderLines;
-  final int? cutomerId;
+  final int? customerId;
   final String? customerName;
   final String? phone;
   final String? ward;
   final String? township;
-  final String? salePersonId;
+  final int? salePersonId;
   final String? salePersonName;
 
   factory SaleOrder.fromJson(Map<String, dynamic> json) {
@@ -49,9 +49,9 @@ class SaleOrder extends Entity {
       ward: json['ward'],
       phone: json['phone'],
       customerName: json['customerName'],
-      cutomerId: json['cutomerId'],
-      // saleOrderLines: saleOrderLines,
-      saleOrderLines: const [], // FROM LINE
+      customerId: json['customerId'],
+      saleOrderLines: saleOrderLines,
+      // saleOrderLines: const [], // FROM LINE
 
       // saleOrderLines: (json['saleOrderLines'] as List).map(orderLine => SaleOrderLine.fromJson(orderLine)).toList,
     );
@@ -70,7 +70,7 @@ class SaleOrder extends Entity {
     map['ward'] = ward;
     map['phone'] = phone;
     map['customerName'] = customerName;
-    map['cutomerId'] = cutomerId;
+    map['customerId'] = customerId;
     // map['saleOrderLines'] = saleOrderLines != null
     //     ? saleOrderLines?.map((e) => e.toJson()).toList()
     //     : [];
@@ -89,7 +89,7 @@ class SaleOrder extends Entity {
       String? phone,
       String? ward,
       String? township,
-      String? salePersonId,
+      int? salePersonId,
       String? salePersonName}) {
     return SaleOrder(
         id: id ?? this.id,
@@ -98,7 +98,7 @@ class SaleOrder extends Entity {
         orderDate: orderDate ?? this.orderDate,
         deliveryStatus: deliveryStatus ?? this.deliveryStatus,
         saleOrderLines: saleOrderLines ?? saleOrderLines,
-        cutomerId: cutomerId ?? cutomerId,
+        customerId: cutomerId ?? cutomerId,
         customerName: customerName ?? customerName,
         phone: phone ?? phone,
         ward: ward ?? ward,
@@ -115,7 +115,7 @@ class SaleOrder extends Entity {
         orderDate,
         deliveryStatus,
         saleOrderLines,
-        cutomerId,
+        customerId,
         customerName,
         phone,
         ward,

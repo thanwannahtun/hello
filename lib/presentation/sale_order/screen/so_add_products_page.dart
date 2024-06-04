@@ -1,9 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hello/config/route/route_lists.dart';
+import 'package:hello/core/utils/entity.dart';
 import 'package:hello/models/product.dart';
-import 'package:hello/presentation/sale_order/screen/sale_order_create_page.dart';
+import 'package:hello/presentation/product/bloc/product_bloc.dart';
+import 'package:hello/presentation/sale_order/bloc/sale_order_bloc.dart';
+import 'package:hello/presentation/sale_order/model/sale_order.dart';
+import 'package:hello/presentation/sale_order/model/sale_order_line.dart';
+import 'package:hello/widgets/custom_bottom_sheet.dart';
 import 'package:hello/widgets/custom_text_field.dart';
 
 class SaleOrderAddProductsPage extends StatefulWidget {
@@ -15,17 +19,36 @@ class SaleOrderAddProductsPage extends StatefulWidget {
 }
 
 class _saleOrderAddProductsPageState extends State<SaleOrderAddProductsPage> {
-  final List<Product> _products = [];
-  // List<Uom> _uomLists = []; here
+  List<Product> _products = [];
+
+  // /* start
+
+  final List<Uom> _uomLists = [
+    Uom(id: 1, name: 'g'),
+    Uom(id: 2, name: 'kg'),
+    Uom(id: 3, name: 'lb'),
+    Uom(id: 4, name: 'wb'),
+    Uom(id: 5, name: 'L'),
+  ];
+
+  // */ end
 
   late TextEditingController _productController;
   late TextEditingController _productUomController;
   late TextEditingController _quantityController;
 
+  late ProductBloc _productBloc;
+
+  Product? _product;
+
+  // fields
+  double? _unitPrice;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _productBloc = context.read<ProductBloc>()..add(ProductFetchEvent());
+    _products = _productBloc.state.products;
     _productController = TextEditingController();
     _productUomController = TextEditingController();
     _quantityController = TextEditingController();
@@ -51,6 +74,14 @@ class _saleOrderAddProductsPageState extends State<SaleOrderAddProductsPage> {
           children: [
             CustomTextField(
               controller: _productController,
+              onTap: () async {
+                Product? product = await CustomBottomSheet(models: _products)
+                    .showBottomSheet(context);
+                if (product != null) {
+                  _productController.text = product.name ?? 'product';
+                  _product = product;
+                }
+              },
               hintText: 'Product',
             ),
             const SizedBox(
@@ -59,6 +90,13 @@ class _saleOrderAddProductsPageState extends State<SaleOrderAddProductsPage> {
             CustomTextField(
               controller: _productUomController,
               hintText: 'UOM',
+              onTap: () async {
+                Uom? uom = await CustomBottomSheet(models: _uomLists)
+                    .showBottomSheet(context);
+                if (uom != null) {
+                  _productUomController.text = uom.name;
+                }
+              },
             ),
             const SizedBox(
               height: 5,
@@ -81,13 +119,25 @@ class _saleOrderAddProductsPageState extends State<SaleOrderAddProductsPage> {
               Expanded(
                   child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(RouteLists.saleOrderCreatePage);
+                        Navigator.popAndPushNamed(
+                            context, RouteLists.saleOrderCreatePage);
+                        // show save or discard dialog
                       },
                       child: const Text('< Back'))),
               Expanded(
                   child: ElevatedButton(
                       onPressed: () {
+                        // add to bloc
+                        SaleOrderLine orderLine = SaleOrderLine(
+                            productUnitPrice: _unitPrice,
+                            productName: _productController.text,
+                            productId: (_product?.id),
+                            orderQuantity: int.parse(_quantityController.text),
+                            productUom: _productUomController.text);
+
+                        SaleOrderBloc()
+                            .add(AddOrderLineEvent(orderLine: orderLine));
+
                         Navigator.pushNamed(
                             context, RouteLists.saleOrderAddProductsPage);
                       },
@@ -98,4 +148,14 @@ class _saleOrderAddProductsPageState extends State<SaleOrderAddProductsPage> {
       ],
     );
   }
+}
+
+class Uom extends Entity {
+  Uom({required this.id, required this.name})
+      : super(entityId: id, entityName: name);
+  int id;
+  String name;
+
+  @override
+  List<Object?> get props => [id, name];
 }
