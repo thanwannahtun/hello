@@ -15,4 +15,5 @@ class RouteLists {
   static const String saleOrderCreatePage = 'sale_order_create_page';
   static const String saleOrderDetailPage = 'sale_order_detail_page';
   static const String saleOrderAddProductsPage = 'sale_order_add_products_page';
+  static const String purchasePage = 'purchase_page';
 }
