@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hello/data/database/crud_table.dart';
 import 'package:hello/presentation/department/bloc/department_bloc.dart';
 import 'package:hello/presentation/department/screens/department_create_page.dart';
 import 'package:hello/presentation/department/screens/department_detail_page.dart';
@@ -7,8 +8,11 @@ import 'package:hello/presentation/department/screens/department_list_page.dart'
 import 'package:hello/presentation/inventory/bloc/inventory_bloc.dart';
 import 'package:hello/presentation/product/bloc/product_bloc.dart';
 import 'package:hello/presentation/inventory/screens/inventory_page.dart';
+import 'package:hello/presentation/purchase/bloc/purchase_bloc.dart';
+import 'package:hello/presentation/purchase/screen/purchase_screen.dart';
 import 'package:hello/presentation/sale_order/screen/sale_order_create_page.dart';
 import 'package:hello/presentation/sale_order/screen/sale_order_page.dart';
+import 'package:hello/presentation/sale_order/screen/so_add_products_page.dart';
 import 'package:hello/screens/no_route_page.dart';
 import 'package:hello/presentation/product/screen/product_add_page.dart';
 import 'package:hello/presentation/product/screen/product_list.dart';
@@ -108,6 +112,17 @@ class RouteGenerator {
             builder: (context) => const DepartmentDetailPage(),
             settings: settings);
 
+      /// [purchase]
+      case RouteLists.purchasePage:
+        return chooseRoute(
+            builder: (context) {
+              return BlocProvider<PurchaseBloc>(
+                create: (context) =>
+                    PurchaseBloc(databaseHelper: CRUDTable.instance),
+                child: PurchaseScreen(),
+              );
+            },
+            settings: settings);
       // case RouteLists.departmentListPage:
       //   return chooseRoute(
       //       builder: (context) {
@@ -143,6 +158,10 @@ class RouteGenerator {
       case RouteLists.saleOrderCreatePage:
         return chooseRoute(
             builder: (context) => const SaleOrderCreatePage(),
+            settings: settings);
+      case RouteLists.saleOrderAddProductsPage:
+        return chooseRoute(
+            builder: (context) => const SaleOrderAddProductsPage(),
             settings: settings);
 
       case RouteLists.saleOrderDetailPage:

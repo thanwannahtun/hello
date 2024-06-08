@@ -46,6 +46,9 @@ dependencies:
   csv: ^6.0.0
   encrypt: ^5.0.3
   dio: ^5.4.3+1
+  # date time 
+  calendar_date_picker2: ^1.0.2
+  pretty_dio_logger: ^1.3.1
 
 
 dev_dependencies:

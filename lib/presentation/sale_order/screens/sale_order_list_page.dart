@@ -9,14 +9,14 @@ import 'package:hello/utils/constant_strings.dart';
 import 'package:hello/widgets/custom_text_field.dart';
 import 'package:hello/widgets/custom_widgets.dart';
 
-class SaleOrderPage extends StatefulWidget {
-  const SaleOrderPage({super.key});
+class SaleOrderListPage extends StatefulWidget {
+  const SaleOrderListPage({super.key});
 
   @override
-  State<SaleOrderPage> createState() => _SaleOrderPageState();
+  State<SaleOrderListPage> createState() => _SaleOrderListPageState();
 }
 
-class _SaleOrderPageState extends State<SaleOrderPage> {
+class _SaleOrderListPageState extends State<SaleOrderListPage> {
   late SaleOrderBloc _saleOrderBloc;
 
   List<SaleOrder> saleOrders = [];
@@ -96,10 +96,6 @@ class _SaleOrderPageState extends State<SaleOrderPage> {
         ),
       ],
     );
-  }
-
-  _saleOrderCreatePage() {
-    Navigator.of(context).pushNamed(RouteLists.saleOrderCreatePage);
   }
 
   Widget _showSaleOrders(SaleOrder saleOrder) {
