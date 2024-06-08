@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hello/domain/api_utils/test_screen.dart';
 import 'package:hello/utils/constant_strings.dart';
 import 'package:hello/config/route/route_lists.dart';
 
@@ -75,6 +76,16 @@ class CustomDrawer extends StatelessWidget {
           const Divider(
             height: ConstantString.paddingM,
           ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => const TestDioScreen(),
+                  ));
+            },
+            title: const Text('Dio'),
+          )
         ],
       ),
     );
