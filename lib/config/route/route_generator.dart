@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hello/data/database/crud_table.dart';
+import 'package:hello/presentation/authentication/bloc/authentication_bloc.dart';
+import 'package:hello/presentation/authentication/screens/home_screen.dart';
+import 'package:hello/presentation/authentication/screens/sign_in_screen.dart';
+import 'package:hello/presentation/authentication/screens/sign_up_screen.dart';
 import 'package:hello/presentation/department/bloc/department_bloc.dart';
 import 'package:hello/presentation/department/screens/department_create_page.dart';
 import 'package:hello/presentation/department/screens/department_detail_page.dart';
@@ -168,6 +172,17 @@ class RouteGenerator {
         return chooseRoute(
             builder: (context) => const SaleOrderDetailPage(),
             settings: settings);
+
+      /// [Auth]
+      case RouteLists.homePage:
+        return chooseRoute(
+            builder: (context) => const HomeScreen(), settings: settings);
+      case RouteLists.singInPage:
+        return chooseRoute(
+            builder: (context) => SignInScreen(), settings: settings);
+      case RouteLists.singUpPage:
+        return chooseRoute(
+            builder: (context) => SignUpScreen(), settings: settings);
 
       default:
         return chooseRoute(

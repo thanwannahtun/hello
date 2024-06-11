@@ -57,4 +57,9 @@ class SharePreference {
     await _getInstance();
     return _sharedPreferences.setBool(key, value);
   }
+
+  Future<bool> remove(String key) async {
+    await _getInstance();
+    return _sharedPreferences.remove(key);
+  }
 }

@@ -1,20 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:hello/core/utils/env.dart';
 import 'package:hello/domain/api_utils/api_error_handler.dart';
 import 'package:hello/domain/api_utils/logging_inteceptor.dart';
 import 'package:hello/domain/api_utils/retry_intercepton.dart';
+import 'package:hello/utils/share_preference.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiService {
   final Dio _dio;
-  final String _refreshTokenUrl = '/auth/refresh';
+  final String _refreshTokenUrl = '/auth/refresh_token';
 
-  static const String _baseUrl = 'http://localhost:3000';
+  static const String _baseUrl = 'http://192.168.100.7:3000';
 
-  static const String _ipAddress = 'http://192.168.100.7:3000';
-
-  static const String _ip2 = 'http://192.168.1.15:3000';
-
-  ApiService([baseUrl = _ip2])
+  ApiService([baseUrl = _baseUrl])
       : _dio = Dio(
           BaseOptions(
               baseUrl: baseUrl,
@@ -49,9 +47,12 @@ class ApiService {
     _dio.interceptors.add(LoggingInterceptor(dio: _dio));
 
     _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
+      onRequest: (options, handler) async {
         // Add common headers or tokens here
-        options.headers['Authorization'] = 'Bearer your_api_token';
+        String? accessToken =
+            await SharePreference.instance.getString(Env.accessToken);
+        // if (accessToken == null) {}
+        options.headers['Authorization'] = 'Bearer $accessToken';
         return handler.next(options);
       },
       onResponse: (response, handler) {
@@ -65,7 +66,9 @@ class ApiService {
           RequestOptions requestOptions = e.requestOptions;
           try {
             await _refreshToken();
-            requestOptions.headers['Authorization'] = 'Bearer new_api_token';
+            String? newAccessToken =
+                await SharePreference.instance.getString(Env.accessToken);
+            requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
             final cloneReq = await _dio.request(
               requestOptions.path,
               options: Options(
@@ -80,7 +83,7 @@ class ApiService {
             return handler.next(e);
           }
         } else {
-          ApiErrorHandler.handle(e); // I think error here
+          ApiErrorHandler.handle(e); // I think Inprovement here
         }
 
         /// <------ Error Here
@@ -95,18 +98,22 @@ class ApiService {
     // This typically involves making a POST request to the refresh token endpoint
     // and updating the stored tokens.
     try {
+      String? refreshToken =
+          await SharePreference.instance.getString(Env.refreshToken);
       final response = await _dio.post(_refreshTokenUrl, data: {
-        'refresh_token': 'your_refresh_token',
+        'refreshToken': refreshToken,
       });
 
       // Extract the new token from the response and store it
-      String newToken = response.data['access_token']; // token
+      String newRefreshToken = response.data['refreshToken']; // token
       // Update the authorization header for subsequent requests
-      _dio.options.headers['Authorization'] = 'Bearer $newToken';
+      _dio.options.headers['Authorization'] = 'Bearer $newRefreshToken';
 
       // You might also want to update the refresh token
       // String newRefreshToken = response.data['refresh_token'];
       // Store the new refresh token securely
+      await SharePreference.instance
+          .setString(Env.refreshToken, newRefreshToken);
     } on DioException catch (e) {
       // Handle error during token refresh
       throw ApiErrorHandler.handle(e);

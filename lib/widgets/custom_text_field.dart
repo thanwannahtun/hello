@@ -13,6 +13,8 @@ class CustomTextField extends StatefulWidget {
       this.prefix,
       this.prefixIcon,
       this.suffix,
+      this.labelText,
+      this.obscureText,
       this.suffixIcon});
   TextEditingController controller;
   String? hintText;
@@ -25,7 +27,8 @@ class CustomTextField extends StatefulWidget {
   Widget? prefixIcon;
   Widget? suffix;
   Widget? suffixIcon;
-
+  bool? obscureText;
+  String? labelText;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -34,8 +37,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: (widget.obscureText) ?? false,
       controller: widget.controller,
       decoration: InputDecoration(
+        labelText: widget.labelText,
         prefix: widget.prefix,
         prefixIcon: widget.prefixIcon,
         border: const OutlineInputBorder(

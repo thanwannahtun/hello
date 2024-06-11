@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hello/presentation/authentication/bloc/authentication_bloc.dart';
+import 'package:hello/presentation/authentication/cubit/token_check_cubit.dart';
 import 'package:hello/presentation/department/bloc/department_bloc.dart';
 import 'package:hello/presentation/inventory/bloc/inventory_bloc.dart';
 import 'package:hello/presentation/product/bloc/product_bloc.dart';
@@ -34,12 +36,19 @@ class MyApp extends StatelessWidget {
         BlocProvider<SaleOrderBloc>(
           create: (context) => SaleOrderBloc(),
         ),
+        BlocProvider<AuthenticationBloc>(
+          create: (context) => AuthenticationBloc(),
+        ),
+
+        BlocProvider<TokenCheckCubit>(
+          create: (context) => TokenCheckCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         onGenerateRoute: RouteGenerator().generateRoute,
-        initialRoute: RouteLists.itemChoose,
+        initialRoute: RouteLists.singInPage,
       ),
     );
   }

@@ -11,5 +11,9 @@ enum BlocStatus {
   updatefailed,
   deleted,
   deleting,
-  deletefailed
+  deletefailed,
+  authenticated,
+  unauthenticated,
+  loading,
+  authenticatinFail
 }
