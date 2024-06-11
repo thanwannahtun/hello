@@ -53,7 +53,7 @@ class SignUpScreen extends StatelessWidget {
                 BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
                     if (state.status == BlocStatus.loading) {
-                      return const CircularProgressIndicator();
+                      // return const CircularProgressIndicator();
                     }
                     return ElevatedButton(
                       onPressed: () {

@@ -17,7 +17,6 @@ class _TestDioScreenState extends State<TestDioScreen> {
   initState() {
     print('initiState');
     super.initState();
-    fetchUsers();
   }
 
   dynamic fetchUsers() async {
@@ -30,8 +29,8 @@ class _TestDioScreenState extends State<TestDioScreen> {
       print('hello');
       setState(() {});
     } on DioException catch (e) {
-      print('eeeeeee ::: ${ApiErrorHandler.handle(e)}');
-      return ApiErrorHandler.handle(e);
+      print('eeeeeee ::: ${ApiErrorHandler.handle(e).message}');
+      return ApiErrorHandler.handle(e).message;
     }
   }
 

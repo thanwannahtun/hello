@@ -36,19 +36,19 @@ class MyApp extends StatelessWidget {
         BlocProvider<SaleOrderBloc>(
           create: (context) => SaleOrderBloc(),
         ),
-        BlocProvider<AuthenticationBloc>(
-          create: (context) => AuthenticationBloc(),
-        ),
 
         BlocProvider<TokenCheckCubit>(
           create: (context) => TokenCheckCubit(),
+        ),
+        BlocProvider<AuthenticationBloc>(
+          create: (context) => AuthenticationBloc(),
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         onGenerateRoute: RouteGenerator().generateRoute,
-        initialRoute: RouteLists.singInPage,
+        initialRoute: RouteLists.homePage,
       ),
     );
   }

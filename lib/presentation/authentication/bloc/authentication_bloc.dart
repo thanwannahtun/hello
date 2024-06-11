@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hello/domain/api_utils/api_error_handler.dart';
 import 'package:hello/presentation/authentication/repo/authentication.dart';
 import 'package:hello/presentation/bloc/bloc_status.dart';
 
@@ -28,6 +30,10 @@ class AuthenticationBloc
       await _authenticationRepo.signIn(
           email: event.email, password: event.password);
       emit(state.copyWith(status: BlocStatus.authenticated));
+    } on DioException catch (e) {
+      emit(state.copyWith(
+          status: BlocStatus.authenticatinFail,
+          error: ApiErrorHandler.handle(e).message));
     } catch (e) {
       debugPrint('Error ( Auth ) :::::::: $e');
       emit(state.copyWith(
@@ -44,6 +50,10 @@ class AuthenticationBloc
           email: event.email,
           password: event.password);
       emit(state.copyWith(status: BlocStatus.authenticated));
+    } on DioException catch (e) {
+      emit(state.copyWith(
+          status: BlocStatus.authenticatinFail,
+          error: ApiErrorHandler.handle(e).message));
     } catch (e) {
       debugPrint('Error ( Auth ) :::::::: $e');
       emit(state.copyWith(

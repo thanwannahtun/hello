@@ -6,10 +6,11 @@ class AuthenticationState extends Equatable {
 
   const AuthenticationState({required this.status, this.error});
 
-  @override
-  List<Object> get props => [];
   AuthenticationState copyWith({BlocStatus? status, String? error}) {
     return AuthenticationState(
         status: status ?? this.status, error: error ?? this.error);
   }
+
+  @override
+  List<Object?> get props => [status, error];
 }

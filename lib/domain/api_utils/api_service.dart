@@ -10,7 +10,7 @@ class ApiService {
   final Dio _dio;
   final String _refreshTokenUrl = '/auth/refresh_token';
 
-  static const String _baseUrl = 'http://192.168.100.7:3000';
+  static const String _baseUrl = 'http://192.168.100.7:3000/api/v1';
 
   ApiService([baseUrl = _baseUrl])
       : _dio = Dio(
@@ -94,6 +94,7 @@ class ApiService {
   }
 
   Future<void> _refreshToken() async {
+    print('called refreshToken');
     // Implement your token refresh logic here.
     // This typically involves making a POST request to the refresh token endpoint
     // and updating the stored tokens.
@@ -113,7 +114,7 @@ class ApiService {
       // String newRefreshToken = response.data['refresh_token'];
       // Store the new refresh token securely
       await SharePreference.instance
-          .setString(Env.refreshToken, newRefreshToken);
+          .setString(Env.accessToken, newRefreshToken);
     } on DioException catch (e) {
       // Handle error during token refresh
       throw ApiErrorHandler.handle(e);

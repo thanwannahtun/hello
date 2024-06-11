@@ -5,6 +5,7 @@ import 'package:hello/core/utils/env.dart';
 import 'package:hello/domain/api_utils/api_error_handler.dart';
 // import 'package:hello/data/database/crud_table.dart';
 import 'package:hello/domain/api_utils/api_service.dart';
+import 'package:hello/domain/api_utils/exceptions.dart';
 import 'package:hello/utils/share_preference.dart';
 
 class AuthenticationRepo {
@@ -20,36 +21,39 @@ class AuthenticationRepo {
     return _instance;
   }
 
-  FutureOr<String> signIn(
+  FutureOr<void> signIn(
       {required String email, required String password}) async {
     var data = {'email': email, 'password': password};
-    try {
-      Response response = await _apiService.postRequest('/auth/sign_in', data);
-      await SharePreference.instance
-          .setString(Env.accessToken, response.data['token']);
-      print('token -------------------------- ${response.data['token']}');
-      return response.data['token'];
-    } on DioException catch (e) {
-      return ApiErrorHandler.handle(e).message;
+
+    Response response = await _apiService.postRequest('/auth/sign_in', data);
+    if (response.data['accessToken'] == null &&
+        response.data['refreshToken'] == null) {
+      throw ApiException(message: 'Fail to signup');
     }
+
+    await SharePreference.instance
+        .setString(Env.accessToken, response.data['accessToken']);
+    print('token -------------------------- ${response.data['accessToken']}');
+    // return response.data['accessToken'];
   }
 
-  FutureOr<String> singUp(
+  FutureOr<void> singUp(
       {required String username,
       required String email,
       required String password}) async {
     var data = {'email': email, 'password': password, 'name': username};
-    try {
-      Response response = await _apiService.postRequest('/auth/sign_up', data);
+    Response response = await _apiService.postRequest('/auth/sign_up', data);
 
-      await SharePreference.instance
-          .setString(Env.accessToken, response.data['accessToken']);
-      await SharePreference.instance
-          .setString(Env.refreshToken, response.data['refreshToken']);
-      return response.data['token'];
-    } on DioException catch (e) {
-      return ApiErrorHandler.handle(e).message;
+    if (response.data['accessToken'] == null &&
+        response.data['refreshToken'] == null) {
+      throw ApiException(message: 'Fail to signup');
     }
+
+    await SharePreference.instance
+        .setString(Env.accessToken, response.data['accessToken']);
+    await SharePreference.instance
+        .setString(Env.refreshToken, response.data['refreshToken']);
+    // return response.data['token'];
   }
 
   Future<bool> signOut() async {
